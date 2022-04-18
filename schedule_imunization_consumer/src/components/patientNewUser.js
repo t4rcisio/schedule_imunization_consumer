@@ -14,11 +14,11 @@ const SignupSchema = Yup.object().shape({
     .max(11, "Hii... não está correto")
     .required("Informar o CPF é obrigatório"),
   date: Yup.date()
-    .max(Date(), "Essa data não vale....")
+    .max(Date(), "A vacinação está disponível apenas para maiores de 5 anos!")
     .required("É preciso informar a data do seu nascimento"),
 });
 
-const PatientLogin = (values) => {
+const PatientNewUser = (values) => {
   const newPatient = async (values) => {
     const ndate = values.date.toISOString();
     const [date] = ndate.split("T");
@@ -83,9 +83,9 @@ const PatientLogin = (values) => {
               <label>Data de nascimento</label>
               <Calendar name="date" type="date" />
               <br />
-              {errors.date && touched.date && (
+              {errors.date && (
                 <small className="form-text text-muted">
-                  <Badge bg="danger">selecione a data</Badge>{" "}
+                  <Badge bg="danger">{errors.date}</Badge>{" "}
                 </small>
               )}
             </FormGroup>
@@ -93,7 +93,7 @@ const PatientLogin = (values) => {
               variant="success"
               className="btn btn-primary"
               onClick={() => {
-                console.log(errors);
+                console.log({ ...errors });
                 if (!(Object.keys(errors).length === 0))
                   return alert("Preencha todos os campos!");
                 newPatient(values);
@@ -108,4 +108,4 @@ const PatientLogin = (values) => {
   );
 };
 
-export default PatientLogin;
+export default PatientNewUser;
