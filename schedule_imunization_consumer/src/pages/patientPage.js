@@ -1,8 +1,11 @@
 import PatientLogin from "../components/patientLogin";
-
+import { Container } from "react-bootstrap";
 const PatientPage = () => {
-  return <PatientLogin />;
+  return (
+    <Container>
+      <PatientLogin />
+    </Container>
+  );
 };
 
 export default PatientPage;
-

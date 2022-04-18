@@ -1,31 +1,32 @@
-import { Form, FormGroup, Button } from "react-bootstrap";
+import { Form, FormGroup, Button, Badge } from "react-bootstrap";
 import { useState } from "react";
+import Calendar from "./calendar.js";
+import { Formik, Field } from "formik";
+import * as Yup from "yup";
 
-const PatientLogin = () => {
-  const [patientName, setPatientName] = useState("");
-  const [patientCPF, setPatientCPF] = useState("");
-  const [patientBirthday, setPatientBirthday] = useState("");
+const SignupSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, "Esse nome não é válido")
+    .max(50, "Esse nome não é válido")
+    .required("Informar seu nome é obrigatório"),
+  cpf: Yup.string()
+    .min(11, "Hii... não está correto")
+    .max(11, "Hii... não está correto")
+    .required("Informar o CPF é obrigatório"),
+  date: Yup.date()
+    .max(Date(), "Essa data não vale....")
+    .required("É preciso informar a data do seu nascimento"),
+});
 
-  const setName = (event) => {
-    setPatientName(event.target.value);
-  };
-
-  const setCPF = (event) => {
-    setPatientCPF(event.target.value);
-  };
-
-  const setBirthday = (event) => {
-    setPatientBirthday(event.target.value);
-  };
-
-  const newPatient = async () => {
-    const date = new Date(patientBirthday + "GMT-3");
-    const ndate = date.toLocaleDateString();
+const PatientLogin = (values) => {
+  const newPatient = async (values) => {
+    const ndate = values.date.toISOString();
+    const [date] = ndate.split("T");
 
     const params = {
-      name: patientName,
-      birthday: ndate,
-      cpf: patientCPF,
+      name: values.name,
+      birthday: date,
+      cpf: values.cpf,
     };
 
     const patientParams = JSON.stringify(params);
@@ -49,45 +50,60 @@ const PatientLogin = () => {
 
   return (
     <>
-      <Form>
-        <FormGroup>
-          <label>Nome</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Digite seu nome completo"
-            onChange={setName}
-          />
-          <small className="form-text text-muted">
-            We'll never share your email with anyone else.
-          </small>
-        </FormGroup>
-        <FormGroup>
-          <label>CPF</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="123.456.789-10"
-            onChange={setCPF}
-          />
-        </FormGroup>
-        <FormGroup>
-          <label>Data de nascimento</label>
-          <input
-            type="date"
-            className="form-control"
-            placeholder="Exemplo: 15/03/1999"
-            onChange={setBirthday}
-          />
-        </FormGroup>
-        <Button
-          variant="success"
-          className="btn btn-primary"
-          onClick={() => newPatient()}
-        >
-          Submit
-        </Button>
-      </Form>
+      <Formik
+        validationSchema={SignupSchema}
+        newPatient={newPatient}
+        initialValues={{ email: "", password: "", date: "" }}
+      >
+        {({ values, errors, touched, setFieldValue }) => (
+          <Form>
+            <FormGroup>
+              <label>Nome</label>
+              <br />
+              <Field type="text" name="name" />
+              <br />
+              {errors.name && touched.name && (
+                <small className="form-text text-muted">
+                  <Badge bg="danger">{errors.name}</Badge>{" "}
+                </small>
+              )}
+            </FormGroup>
+            <FormGroup>
+              <label>CPF</label>
+              <br />
+              <Field type="text" name="cpf" />
+              <br />
+              {errors.cpf && touched.cpf && (
+                <small className="form-text text-muted">
+                  <Badge bg="danger">{errors.cpf}</Badge>{" "}
+                </small>
+              )}
+            </FormGroup>
+            <FormGroup>
+              <label>Data de nascimento</label>
+              <Calendar name="date" type="date" />
+              <br />
+              {errors.date && touched.date && (
+                <small className="form-text text-muted">
+                  <Badge bg="danger">selecione a data</Badge>{" "}
+                </small>
+              )}
+            </FormGroup>
+            <Button
+              variant="success"
+              className="btn btn-primary"
+              onClick={() => {
+                console.log(errors);
+                if (!(Object.keys(errors).length === 0))
+                  return alert("Preencha todos os campos!");
+                newPatient(values);
+              }}
+            >
+              Submit
+            </Button>
+          </Form>
+        )}
+      </Formik>
     </>
   );
 };
