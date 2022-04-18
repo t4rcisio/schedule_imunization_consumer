@@ -1,5 +1,4 @@
 import { Form, FormGroup, Button, Badge } from "react-bootstrap";
-import { useState } from "react";
 import Calendar from "./calendar.js";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
@@ -18,7 +17,7 @@ const SignupSchema = Yup.object().shape({
     .required("É preciso informar a data do seu nascimento"),
 });
 
-const PatientNewUser = (values) => {
+const NewPatientForm = ({ setNewPatient }) => {
   const newPatient = async (values) => {
     const ndate = values.date.toISOString();
     const [date] = ndate.split("T");
@@ -53,7 +52,7 @@ const PatientNewUser = (values) => {
       <Formik
         validationSchema={SignupSchema}
         newPatient={newPatient}
-        initialValues={{ email: "", password: "", date: "" }}
+        initialValues={{ name: "", cpf: "", date: "" }}
       >
         {({ values, errors, touched, setFieldValue }) => (
           <Form>
@@ -91,7 +90,7 @@ const PatientNewUser = (values) => {
             </FormGroup>
             <Button
               variant="success"
-              className="btn btn-primary"
+              className="btn btn-primary mt-3"
               onClick={() => {
                 console.log({ ...errors });
                 if (!(Object.keys(errors).length === 0))
@@ -99,7 +98,17 @@ const PatientNewUser = (values) => {
                 newPatient(values);
               }}
             >
-              Submit
+              Salvar
+            </Button>
+            <small className="form-text text-muted ms-3 me-3">
+              <Badge bg="danger">OU</Badge>{" "}
+            </small>
+            <Button
+              variant="secondary"
+              className="btn btn-primary mt-3"
+              onClick={() => setNewPatient(false)}
+            >
+              Já tenho cadastro
             </Button>
           </Form>
         )}
@@ -108,4 +117,4 @@ const PatientNewUser = (values) => {
   );
 };
 
-export default PatientNewUser;
+export default NewPatientForm;
