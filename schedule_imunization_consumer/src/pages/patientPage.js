@@ -1,6 +1,6 @@
 import NewPatientForm from "../components/newPatientForm.js";
 import LoginPatientForm from "../components/loginPatientForm.js";
-import patientScheduleView from "../components/patientHome.js";
+import HomePage from "../components/patientHome.js";
 import { Container } from "react-bootstrap";
 import { useState } from "react";
 const PatientPage = () => {
@@ -18,7 +18,7 @@ const PatientPage = () => {
       {!userToken && newPatient && (
         <NewPatientForm setNewPatient={setNewPatient} />
       )}
-      {userToken && <>Logado</>}
+      {userToken && <HomePage />}
     </Container>
   );
 };
