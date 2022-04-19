@@ -1,7 +1,8 @@
-import { Form, FormGroup, Button, Badge } from "react-bootstrap";
-import Calendar from "./calendar.js";
+import { Form, FormGroup, Button, Badge, Col, Spinner } from "react-bootstrap";
+import axiosClient from "../utils/axios.js";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
+import { useState, useEffect } from "react";
 
 const LoginSchema = Yup.object().shape({
   cpf: Yup.string()
@@ -10,30 +11,33 @@ const LoginSchema = Yup.object().shape({
     .required("Informar o CPF é obrigatório"),
 });
 
-const LoginPatientForm = ({ setNewPatient }) => {
-  const loginPatient = async (values) => {
-    const params = {
-      cpf: values.cpf,
-    };
+const LoginPatientForm = ({ setNewPatient, setToken }) => {
+  const [response, setResponse] = useState(undefined);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [params, setParams] = useState(undefined);
 
-    const patientParams = JSON.stringify(params);
+  useEffect(() => {}, [params]);
 
-    const data = new FormData();
-    data.append("json", JSON.stringify(params));
+  const custonFetch = async (cpf) => {
+    axiosClient
+      .post("/patient/login", { cpf })
+      .then((res) => {
+        localStorage.setItem(process.env.REACT_APP_TOKEN_ID, res.data.token);
+        setResponse(res.data.token);
+      })
+      .catch((err) => {
+        setError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+        setToken(true);
+      });
+  };
 
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const response = await fetch("http://localhost:5000/patient/login", {
-      method: "POST",
-      headers: myHeaders,
-      mode: "cors",
-      credentials: "include",
-      cache: "default",
-      body: patientParams,
-    });
-    const object = await response.json();
-    console.log(object);
+  const loginPatient = (cpf) => {
+    setLoading(true);
+    custonFetch(cpf);
   };
 
   return (
@@ -43,7 +47,7 @@ const LoginPatientForm = ({ setNewPatient }) => {
         newPatient={loginPatient}
         initialValues={{ cpf: "" }}
       >
-        {({ values, errors, touched, setFieldValue }) => (
+        {({ values, errors, touched }) => (
           <Form>
             <FormGroup>
               <label>CPF</label>
@@ -56,14 +60,18 @@ const LoginPatientForm = ({ setNewPatient }) => {
                 </small>
               )}
             </FormGroup>
+            {loading && (
+              <Col className="col-md-auto d-flex justify-content-center">
+                <Spinner animation="border" role="status"></Spinner>
+              </Col>
+            )}
             <Button
               variant="success"
               className="btn btn-primary m-3"
               onClick={() => {
-                console.log({ ...errors });
                 if (!(Object.keys(errors).length === 0))
                   return alert("Preencha todos os campos!");
-                loginPatient(values);
+                loginPatient(values.cpf);
               }}
             >
               Fazer login
