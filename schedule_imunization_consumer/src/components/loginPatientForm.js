@@ -1,5 +1,6 @@
 import { Form, FormGroup, Button, Badge, Col, Spinner } from "react-bootstrap";
 import axiosClient from "../utils/axios.js";
+import Loading from "./loading.js";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import { useState, useEffect } from "react";
@@ -16,8 +17,6 @@ const LoginPatientForm = ({ setNewPatient, setToken }) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [params, setParams] = useState(undefined);
-
-  useEffect(() => {}, [params]);
 
   const custonFetch = async (cpf) => {
     axiosClient
@@ -60,11 +59,7 @@ const LoginPatientForm = ({ setNewPatient, setToken }) => {
                 </small>
               )}
             </FormGroup>
-            {loading && (
-              <Col className="col-md-auto d-flex justify-content-center">
-                <Spinner animation="border" role="status"></Spinner>
-              </Col>
-            )}
+            {loading && <Loading />}
             <Button
               variant="success"
               className="btn btn-primary m-3"
