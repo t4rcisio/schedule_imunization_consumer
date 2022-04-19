@@ -2,12 +2,9 @@ import DatePicker from "react-datepicker";
 import { useField, useFormikContext } from "formik";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import pt_br from "date-fns/locale/pt-BR";
-import { getDefaultLocale } from "react-datepicker";
 
 registerLocale("br", pt_br);
 setDefaultLocale("br");
-
-console.log(getDefaultLocale());
 
 const Calendar = ({ ...props }) => {
   const { setFieldValue } = useFormikContext();

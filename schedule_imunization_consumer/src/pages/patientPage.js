@@ -3,20 +3,21 @@ import LoginPatientForm from "../components/loginPatientForm.js";
 import { Container } from "react-bootstrap";
 import { useState } from "react";
 const PatientPage = () => {
-  const [userCookie, setCookie] = useState("");
+  const [userToken, setToken] = useState(false);
   const [newPatient, setNewPatient] = useState(false);
 
-  const findCookies = () => {
-    console.log({ Cookies: document.cookie });
-  };
-  findCookies();
+  if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID) && !userToken)
+    setToken(true);
 
   return (
     <Container>
-      {!userCookie && !newPatient && (
-        <LoginPatientForm setNewPatient={setNewPatient} />
+      {!userToken && !newPatient && (
+        <LoginPatientForm setNewPatient={setNewPatient} setToken={setToken} />
       )}
-      {newPatient && <NewPatientForm setNewPatient={setNewPatient} />}
+      {!userToken && newPatient && (
+        <NewPatientForm setNewPatient={setNewPatient} />
+      )}
+      {userToken && <>Logado</>}
     </Container>
   );
 };
