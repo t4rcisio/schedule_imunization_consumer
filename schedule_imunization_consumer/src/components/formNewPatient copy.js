@@ -1,6 +1,9 @@
 import { Form, FormGroup, Button, Badge } from "react-bootstrap";
+import { useState } from "react";
 import Calendar from "./calendar.js";
 import { Formik, Field } from "formik";
+import Loading from "./loading.js";
+import axiosClient from "../utils/axios.js";
 import * as Yup from "yup";
 
 const SignupSchema = Yup.object().shape({
@@ -18,7 +21,10 @@ const SignupSchema = Yup.object().shape({
 });
 
 const NewPatientForm = ({ setNewPatient }) => {
+  const [loading, setLoading] = useState(false);
+
   const newPatient = async (values) => {
+    setLoading(true);
     const ndate = values.date.toISOString();
     const [date] = ndate.split("T");
 
@@ -28,23 +34,22 @@ const NewPatientForm = ({ setNewPatient }) => {
       cpf: values.cpf,
     };
 
-    const patientParams = JSON.stringify(params);
+    const custonFetch = async () => {
+      axiosClient
+        .post("/patient/new", { ...params })
+        .then((res) => {
+          if (!res.data.error) alert("Done");
+          else alert("Usuário já cadastrado");
+        })
+        .catch((err) => {
+          alert(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
 
-    const data = new FormData();
-    data.append("json", JSON.stringify(params));
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const response = await fetch("http://localhost:5000/patient/new", {
-      method: "POST",
-      headers: myHeaders,
-      mode: "cors",
-      cache: "default",
-      body: patientParams,
-    });
-    const object = await response.json();
-    console.log(object);
+    custonFetch();
   };
 
   return (
@@ -88,28 +93,33 @@ const NewPatientForm = ({ setNewPatient }) => {
                 </small>
               )}
             </FormGroup>
-            <Button
-              variant="success"
-              className="btn btn-primary mt-3"
-              onClick={() => {
-                console.log({ ...errors });
-                if (!(Object.keys(errors).length === 0))
-                  return alert("Preencha todos os campos!");
-                newPatient(values);
-              }}
-            >
-              Salvar
-            </Button>
-            <small className="form-text text-muted ms-3 me-3">
-              <Badge bg="danger">OU</Badge>{" "}
-            </small>
-            <Button
-              variant="secondary"
-              className="btn btn-primary mt-3"
-              onClick={() => setNewPatient(false)}
-            >
-              Já tenho cadastro
-            </Button>
+            {loading && <Loading />}
+            {!loading && (
+              <>
+                <Button
+                  variant="success"
+                  className="btn btn-primary mt-3"
+                  onClick={() => {
+                    console.log({ ...errors });
+                    if (!(Object.keys(errors).length === 0))
+                      return alert("Preencha todos os campos!");
+                    newPatient(values);
+                  }}
+                >
+                  Salvar
+                </Button>
+                <small className="form-text text-muted ms-3 me-3">
+                  <Badge bg="danger">OU</Badge>{" "}
+                </small>
+                <Button
+                  variant="secondary"
+                  className="btn btn-primary mt-3"
+                  onClick={() => setNewPatient(false)}
+                >
+                  Já tenho cadastro
+                </Button>
+              </>
+            )}
           </Form>
         )}
       </Formik>

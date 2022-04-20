@@ -5,12 +5,13 @@ import PatientSessionCards from "./patientSessionCards.js";
 import DeletionModal from "./deleteModal.js";
 import Loading from "./loading.js";
 
-const HomePage = () => {
+const HomePage = ({ updateSession, reloadSession }) => {
   //Fetch hooks
   const [sessions, setSessions] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [empty, setEmpty] = useState(false);
+
   //Modal params
   const [showDeletion, setDelete] = useState(false);
   const [idDeletion, setIdDeletion] = useState("");
@@ -20,8 +21,8 @@ const HomePage = () => {
   const cancelDeletion = () => setDelete(false);
   const deleteSession = () => {
     setDelete(false);
-    console.log(`${idDeletion} foi deletado`);
-    custonFetch("delete", `/sessions/delete/${idDeletion}`);
+
+    custonFetch("delete", `/patient/sessions/delete/${idDeletion}`);
   };
 
   const custonFetch = async (method, url) => {
@@ -29,23 +30,27 @@ const HomePage = () => {
       headers: { token: token },
     })
       .then((res) => {
-        if (!res.data.session.length) setEmpty(true);
-        else if (!res.data.error) {
-          setSessions(res.data.session);
+        if (method === "delete") reloadSession(true);
+        else if (!res.data.patient_session.length) {
           setEmpty(true);
+          setSessions([]);
+        } else if (!res.data.error) {
+          setSessions(res.data.patient_session);
+          setEmpty(false);
         }
       })
       .catch((err) => {
         setError(err);
+        console.log(err);
       })
       .finally(() => {
         setLoading(false);
-        //setSearch(true);
       });
   };
 
-  if (!sessions.length) {
-    custonFetch("get", "patient/sessions/scheduled");
+  if (updateSession) {
+    reloadSession(false);
+    custonFetch("get", "/patient/sessions/scheduled");
   }
 
   return (
