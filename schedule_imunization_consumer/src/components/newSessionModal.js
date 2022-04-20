@@ -39,8 +39,7 @@ const NewSession = ({
 
   const verifyValues = (values) => {
     const ndate = new Date(values.date);
-
-    console.log({ newdate: new Date(), date: ndate });
+    const minutes = ndate.getMinutes();
 
     if (new Date() >= ndate) {
       setAlertDate(true);
@@ -48,6 +47,12 @@ const NewSession = ({
     }
     if (!values.clinic) {
       setAlerClinic(true);
+      return false;
+    }
+
+    if (!(minutes === 0 || minutes === 30)) {
+      setAlertDate(true);
+      return false;
     }
 
     return true;
