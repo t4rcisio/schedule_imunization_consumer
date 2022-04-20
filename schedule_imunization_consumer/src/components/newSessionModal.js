@@ -138,7 +138,7 @@ const NewSession = ({
                 </FormGroup>
                 <>
                   <Button
-                    variant="secondary"
+                    variant="success"
                     className="btn btn-primary mt-3 me-3"
                     onClick={() => {
                       if (verifyValues(values)) buidSession(values);
@@ -149,7 +149,7 @@ const NewSession = ({
                 </>
                 <>
                   <Button
-                    variant="success"
+                    variant="warning"
                     className="btn btn-primary mt-3"
                     onClick={() => {
                       cancelSession(false);
