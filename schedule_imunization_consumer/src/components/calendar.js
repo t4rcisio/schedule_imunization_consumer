@@ -35,6 +35,7 @@ const Calendar = ({ ...props }) => {
     <DatePicker
       locale="br"
       dateFormat="dd-MM-yyyy"
+      maxDate={new Date()}
       renderCustomHeader={({ date, changeYear, changeMonth }) => (
         <div
           style={{

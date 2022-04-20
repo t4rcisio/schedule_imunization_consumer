@@ -1,22 +1,16 @@
 import { ListGroup, ListGroupItem, Card, Badge, Button } from "react-bootstrap";
 
-const SessionCard = ({
-  status,
-  date,
-  name,
-  zipcode,
-  address,
-  district,
-  number,
-}) => {
+const SessionCard = ({ params, setDelete, setIdDeletion }) => {
+  const { sessionId, status, date, name, zipcode, address, district, number } =
+    params;
   const [dateUTC] = date.split(".");
 
-  date = new Date(dateUTC);
-  const data = date.toLocaleDateString();
+  const sessionDate = new Date(dateUTC);
+  const data = sessionDate.toLocaleDateString();
   const [month, day, year] = data.split("/");
 
-  const hour = date.getHours();
-  let minutes = date.getMinutes();
+  const hour = sessionDate.getHours();
+  let minutes = sessionDate.getMinutes();
   if (minutes === 0) minutes = "00";
 
   const clinicAddress =
@@ -43,21 +37,24 @@ const SessionCard = ({
           </p>
         </Card.Body>
         <Card.Footer>
-          <Button
-            variant="danger"
-            onClick={() => {
-              console.log("apagar");
-            }}
-          >
-            Desmarcar
-          </Button>
+          {status === "Scheduled" && (
+            <Button
+              variant="danger"
+              onClick={() => {
+                setDelete(true);
+                setIdDeletion(sessionId);
+              }}
+            >
+              Desmarcar
+            </Button>
+          )}
         </Card.Footer>
       </Card>
     </ListGroupItem>
   );
 };
 
-const PatientSessionCards = ({ sessions }) => {
+const PatientSessionCards = ({ sessions, setDelete, setIdDeletion }) => {
   return (
     <>
       <Card className="mt-5">
@@ -65,14 +62,22 @@ const PatientSessionCards = ({ sessions }) => {
         <Card.Body>
           <ListGroup>
             {sessions.map((session) => {
+              const sesId = session.id;
               const params = {
+                sessionId: sesId,
                 status: session.status,
                 date: session.Session.date,
                 ...session.Session.clinic,
               };
 
-              console.log(params);
-              return <SessionCard key={session.id} {...params} />;
+              return (
+                <SessionCard
+                  key={session.id}
+                  params={params}
+                  setDelete={setDelete}
+                  setIdDeletion={setIdDeletion}
+                />
+              );
             })}
           </ListGroup>
         </Card.Body>
