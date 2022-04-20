@@ -48,8 +48,17 @@ const LoginPatientForm = ({ setNewPatient, setToken }) => {
       >
         {({ values, errors, touched }) => (
           <Form>
+            <p className="font-weight-light" style={{ fontSize: "30px" }}>
+              Login
+            </p>
             <FormGroup>
-              <label>CPF</label>
+              <label>
+                <span>
+                  <Badge bg="dark" className="mb-2">
+                    CPF (Apenas numeros)
+                  </Badge>
+                </span>
+              </label>
               <br />
               <Field type="text" name="cpf" />
               <br />
@@ -71,7 +80,7 @@ const LoginPatientForm = ({ setNewPatient, setToken }) => {
             >
               Fazer login
             </Button>
-            <small className="form-text text-muted m-3 ms-3 me-3">
+            <small className="form-text text-muted me-3">
               <Badge bg="danger">OU</Badge>{" "}
             </small>
             <Button

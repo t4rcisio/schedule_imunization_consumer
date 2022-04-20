@@ -1,5 +1,5 @@
-import NewPatientForm from "../components/newPatientForm.js";
-import LoginPatientForm from "../components/loginPatientForm.js";
+import NewPatientForm from "../components/formProfilePatient.js";
+import LoginPatientForm from "../components/formLoginPatient.js";
 import HomePage from "../components/patientHome.js";
 import NewSession from "../components/newSessionModal.js";
 import { useState } from "react";
@@ -9,9 +9,11 @@ const PatientPage = () => {
   const [userToken, setToken] = useState(undefined);
   const [newPatient, setNewPatient] = useState(false);
   const [newSession, setSession] = useState(false);
+  const [updateSession, setUpdateSession] = useState(true);
 
   const salveSession = () => setSession(false);
   const cancelSession = () => setSession(false);
+  const reloadSession = (state) => setUpdateSession(state);
 
   if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID) && !userToken)
     setToken(localStorage.getItem(process.env.REACT_APP_TOKEN_ID));
@@ -20,16 +22,22 @@ const PatientPage = () => {
     <Container>
       <Row className="mt-2">
         <Card>
-          <Card.Header>
-            {newSession && (
-              <NewSession
-                newSession={newSession}
-                salveSession={salveSession}
-                cancelSession={cancelSession}
-              />
-            )}
-            <Button onClick={() => setSession(true)}>Novo Agendamento</Button>
-          </Card.Header>
+          {userToken && (
+            <Card.Header className="text-end">
+              {newSession && (
+                <NewSession
+                  newSession={newSession}
+                  salveSession={salveSession}
+                  cancelSession={cancelSession}
+                  reloadSession={reloadSession}
+                />
+              )}
+              <Button onClick={() => setSession(true)}>Novo Agendamento</Button>
+              <Button className="ms-5" onClick={() => alert("data")}>
+                Meus Dados
+              </Button>
+            </Card.Header>
+          )}
           <Card.Body>
             {!userToken && !newPatient && (
               <LoginPatientForm
@@ -40,7 +48,12 @@ const PatientPage = () => {
             {!userToken && newPatient && (
               <NewPatientForm setNewPatient={setNewPatient} />
             )}
-            {userToken && <HomePage />}
+            {userToken && (
+              <HomePage
+                updateSession={updateSession}
+                reloadSession={reloadSession}
+              />
+            )}
           </Card.Body>
         </Card>
       </Row>
