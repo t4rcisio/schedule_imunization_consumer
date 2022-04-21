@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Container } from "react-bootstrap";
-import axiosClient from "../utils/axios.js";
-import PatientSessionCards from "./patientSessionCards.js";
-import DeletionModal from "./deleteModal.js";
-import Loading from "./loading.js";
+import axiosClient from "../../utils/axios.js";
+import PatientSessionCards from "../session/patientSessionCards.js";
+import DeletionModal from "../session/deleteModal.js";
+import Loading from "../subcomponents/loading.js";
 
 const HomePage = ({ updateSession, reloadSession }) => {
   //Fetch hooks

@@ -1,8 +1,8 @@
-import NewPatientForm from "../components/formProfilePatient.js";
-import LoginPatientForm from "../components/formLoginPatient.js";
-import HomePage from "../components/patientHome.js";
-import NewSession from "../components/newSessionModal.js";
-import UpdatePatientForm from "../components/formUpdatePatient.js";
+import NewPatientForm from "../components/patient_components/formProfilePatient.js";
+import LoginPatientForm from "../components/patient_components/formLoginPatient.js";
+import HomePage from "../components/patient_components/patientHome.js";
+import NewSession from "../components/session/newSessionModal.js";
+import UpdatePatientForm from "../components/patient_components/formUpdatePatient.js";
 import { useState } from "react";
 import { Row, Container, Card, Button } from "react-bootstrap";
 
