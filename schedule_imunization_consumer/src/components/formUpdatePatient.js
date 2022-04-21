@@ -37,8 +37,6 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
     const [date] = payload.birthday.split("T");
     setValues({ name: payload.name, cpf: payload.cpf, birthday: date });
   }
-  console.log(preValues);
-  console.log({ payload: payload, userToken: userToken });
 
   const updatePatient = async (values) => {
     setLoading(true);

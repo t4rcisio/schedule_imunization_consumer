@@ -1,4 +1,4 @@
-import { Form, FormGroup, Button, Badge, Col, Spinner } from "react-bootstrap";
+import { Form, FormGroup, Button, Badge, Row, Col } from "react-bootstrap";
 import axiosClient from "../utils/axios.js";
 import Loading from "./loading.js";
 import { Formik, Field } from "formik";
@@ -13,24 +13,28 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginPatientForm = ({ setNewPatient, setToken }) => {
-  const [response, setResponse] = useState(undefined);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [params, setParams] = useState(undefined);
 
+  const teste = (data) => {
+    console.log(data);
+  };
   const custonFetch = async (cpf) => {
     axiosClient
       .post("/patient/login", { cpf })
       .then((res) => {
-        localStorage.setItem(process.env.REACT_APP_TOKEN_ID, res.data.token);
-        setResponse(res.data.token);
+        if (!res.data.error) {
+          localStorage.setItem(process.env.REACT_APP_TOKEN_ID, res.data.token);
+          setToken(true);
+        } else {
+          setError(true);
+        }
       })
       .catch((err) => {
-        setError(err);
+        setError(true);
       })
       .finally(() => {
         setLoading(false);
-        setToken(true);
       });
   };
 
@@ -61,6 +65,11 @@ const LoginPatientForm = ({ setNewPatient, setToken }) => {
               </label>
               <br />
               <Field type="text" name="cpf" />
+              {error && (
+                <Badge bg="danger" className="ms-3">
+                  Usuáio não encontrado
+                </Badge>
+              )}
               <br />
               {errors.cpf && touched.cpf && (
                 <small className="form-text text-muted">
@@ -68,21 +77,19 @@ const LoginPatientForm = ({ setNewPatient, setToken }) => {
                 </small>
               )}
             </FormGroup>
+
             {loading && <Loading />}
             <Button
               variant="success"
-              className="btn btn-primary m-3"
+              className="btn btn-primary m-3 fluid"
               onClick={() => {
                 if (!(Object.keys(errors).length === 0))
-                  return alert("Preencha todos os campos!");
+                  return alert("Preencha todos os campos corretamente");
                 loginPatient(values.cpf);
               }}
             >
               Fazer login
             </Button>
-            <small className="form-text text-muted me-3">
-              <Badge bg="danger">OU</Badge>{" "}
-            </small>
             <Button
               variant="success"
               className="btn btn-primary m-3"

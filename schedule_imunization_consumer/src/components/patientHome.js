@@ -21,7 +21,7 @@ const HomePage = ({ updateSession, reloadSession }) => {
   const cancelDeletion = () => setDelete(false);
   const deleteSession = () => {
     setDelete(false);
-
+    setLoading(true);
     custonFetch("delete", `/patient/sessions/delete/${idDeletion}`);
   };
 

@@ -108,12 +108,10 @@ const NewPatientForm = ({ setNewPatient }) => {
                 >
                   Salvar
                 </Button>
-                <small className="form-text text-muted ms-3 me-3">
-                  <Badge bg="danger">OU</Badge>{" "}
-                </small>
+
                 <Button
                   variant="secondary"
-                  className="btn btn-primary mt-3"
+                  className="btn btn-primary ms-3 mt-3"
                   onClick={() => setNewPatient(false)}
                 >
                   Já tenho cadastro

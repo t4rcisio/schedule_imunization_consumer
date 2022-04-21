@@ -13,14 +13,6 @@ const PatientPage = () => {
   const [updateSession, setUpdateSession] = useState(true);
   const [updatePatient, setUpdatePatient] = useState(false);
 
-  console.log({
-    userToken: userToken,
-    updatePatient: updatePatient,
-    updateSession: updateSession,
-    newSession: newSession,
-    newPatient: newPatient,
-  });
-
   const salveSession = () => setSession(false);
   const cancelSession = () => setSession(false);
   const reloadSession = (state) => setUpdateSession(state);
