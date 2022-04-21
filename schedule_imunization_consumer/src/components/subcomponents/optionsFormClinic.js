@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosClient from "../utils/axios";
+import axiosClient from "../../utils/axios";
 import Loading from "./loading.js";
 
 const ClinicLabel = ({ params }) => {

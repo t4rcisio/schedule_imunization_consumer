@@ -8,13 +8,13 @@ import {
   Card,
   Row,
 } from "react-bootstrap";
-import OptionsForm from "./optionsFormClinic.js";
+import OptionsForm from "../subcomponents/optionsFormClinic.js";
 import { useState } from "react";
 import * as Yup from "yup";
-import axiosClient from "../utils/axios.js";
+import axiosClient from "../../utils/axios.js";
 import CalendarSession from "./calendarSession.js";
-import Loading from "./loading.js";
-import ToastNotification from "./toast.js";
+import Loading from "../subcomponents/loading.js";
+import ToastNotification from "../subcomponents/toast.js";
 
 const SessionSchema = Yup.object().shape({
   clinic: Yup.string()

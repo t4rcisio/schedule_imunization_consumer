@@ -1,6 +1,6 @@
 import { Form, FormGroup, Button, Badge, Col, Spinner } from "react-bootstrap";
-import axiosClient from "../utils/axios.js";
-import Loading from "./loading.js";
+import axiosClient from "../../utils/axios.js";
+import Loading from "../subcomponents/loading.js";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import { useState, useEffect } from "react";
