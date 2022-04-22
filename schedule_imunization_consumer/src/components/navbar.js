@@ -1,11 +1,17 @@
 import { useState } from "react";
 import { Nav, Container, Navbar } from "react-bootstrap";
-
 import ModalSwitch from "./modalSwitch";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const [modal, showModal] = useState(false);
   const [link, setLink] = useState(undefined);
+  const navegate = useNavigate();
+
+  const switchPage = (page) => {
+    if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID)) showModal(true);
+    else navegate(page);
+  };
 
   return (
     <>
@@ -16,7 +22,7 @@ const NavBar = () => {
               href="#"
               onClick={() => {
                 setLink("/patient");
-                showModal(true);
+                switchPage("/patient");
               }}
             >
               Portal do paciente
@@ -25,7 +31,7 @@ const NavBar = () => {
               href="#"
               onClick={() => {
                 setLink("/nurse");
-                showModal(true);
+                switchPage("/nurse");
               }}
             >
               Portal do servidor
