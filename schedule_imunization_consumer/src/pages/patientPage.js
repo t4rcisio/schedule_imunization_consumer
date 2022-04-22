@@ -1,25 +1,23 @@
-import NewPatientForm from "../components/patient_components/formProfilePatient.js";
-import LoginPatientForm from "../components/patient_components/formLoginPatient.js";
+import FormCreate from "../components/forms/formCreate.js";
+import FormLogin from "../components/forms/formLogin.js";
 import HomePage from "../components/patient_components/patientHome.js";
 import NewSession from "../components/session/newSessionModal.js";
-import UpdatePatientForm from "../components/patient_components/formUpdatePatient.js";
+import UpdatePatientForm from "../components/forms/formUpdate.js";
 import { useState } from "react";
 import { Row, Container, Card, Button } from "react-bootstrap";
 
 const PatientPage = () => {
   const [userToken, setToken] = useState(undefined);
-  const [newPatient, setNewPatient] = useState(false);
   const [newSession, setSession] = useState(false);
   const [updateSession, setUpdateSession] = useState(true);
   const [updatePatient, setUpdatePatient] = useState(false);
+  const [signin, setSignin] = useState(true);
+  const [signup, setSignup] = useState(false);
 
-  console.log({
-    userToken: userToken,
-    updatePatient: updatePatient,
-    updateSession: updateSession,
-    newSession: newSession,
-    newPatient: newPatient,
-  });
+  const showLoginForm = (state) => {
+    setSignin(state);
+    setSignup(!state);
+  };
 
   const salveSession = () => setSession(false);
   const cancelSession = () => setSession(false);
@@ -29,8 +27,11 @@ const PatientPage = () => {
     setUpdatePatient(state);
   };
 
-  if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID) && !userToken)
+  if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID) && !userToken) {
     setToken(localStorage.getItem(process.env.REACT_APP_TOKEN_ID));
+    setSignin(false);
+    setSignup(false);
+  }
 
   return (
     <Container>
@@ -57,15 +58,12 @@ const PatientPage = () => {
             {updatePatient && (
               <UpdatePatientForm showUpdateForm={showUpdateForm} />
             )}
-            {!userToken && !newPatient && (
-              <LoginPatientForm
-                setNewPatient={setNewPatient}
-                setToken={setToken}
-              />
+            {!userToken && signin && (
+              <FormLogin setToken={setToken} showLoginForm={showLoginForm} />
             )}
 
-            {!userToken && newPatient && (
-              <NewPatientForm setNewPatient={setNewPatient} />
+            {!userToken && signup && (
+              <FormCreate showLoginForm={showLoginForm} />
             )}
             {userToken && !updatePatient && (
               <HomePage

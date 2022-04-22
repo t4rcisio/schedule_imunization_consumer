@@ -1,12 +1,14 @@
 import { Form, FormGroup, Button, Badge } from "react-bootstrap";
 import { useState } from "react";
+import jwtDecode from "jwt-decode";
 import Calendar from "../subcomponents/calendar.js";
 import { Formik, Field } from "formik";
 import Loading from "../subcomponents/loading.js";
 import axiosClient from "../../utils/axios.js";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
-const SignupSchema = Yup.object().shape({
+const UpdateSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "Esse nome não é válido")
     .max(50, "Esse nome não é válido")
@@ -20,10 +22,31 @@ const SignupSchema = Yup.object().shape({
     .required("É preciso informar a data do seu nascimento"),
 });
 
-const NewPatientForm = ({ setNewPatient }) => {
+const UpdatePatientForm = ({ showUpdateForm }) => {
   const [loading, setLoading] = useState(false);
+  const [userToken, setToken] = useState("");
+  const [finshUpdate, setExit] = useState(false);
+  const [payload, setPyload] = useState(undefined);
+  const [preValues, setValues] = useState(undefined);
+  const navegate = useNavigate();
 
-  const newPatient = async (values) => {
+  if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID) && !userToken)
+    setToken(localStorage.getItem(process.env.REACT_APP_TOKEN_ID));
+
+  if (userToken && !payload) setPyload(jwtDecode(userToken));
+
+  if (payload && !preValues) {
+    const [date] = payload.birthday.split("T");
+    setValues({ name: payload.name, cpf: payload.cpf, birthday: date });
+  }
+  console.log(preValues);
+  console.log({ payload: payload, userToken: userToken });
+
+  const clearCredentials = () => {
+    localStorage.removeItem(process.env.REACT_APP_TOKEN_ID);
+  };
+
+  const updatePatient = async (values) => {
     setLoading(true);
     const ndate = values.date.toISOString();
     const [date] = ndate.split("T");
@@ -36,10 +59,13 @@ const NewPatientForm = ({ setNewPatient }) => {
 
     const custonFetch = async () => {
       axiosClient
-        .post("/patient/new", { ...params })
+        .post("/patient/edit", { ...params }, { headers: { token: userToken } })
         .then((res) => {
-          if (!res.data.error) alert("Done");
-          else alert("Usuário já cadastrado");
+          if (!res.data.error) {
+            setExit(true);
+            alert("Seus dados foram atualizados");
+            clearCredentials();
+          } else alert("error");
         })
         .catch((err) => {
           alert(err);
@@ -55,9 +81,14 @@ const NewPatientForm = ({ setNewPatient }) => {
   return (
     <>
       <Formik
-        validationSchema={SignupSchema}
-        newPatient={newPatient}
-        initialValues={{ name: "", cpf: "", date: "" }}
+        validationSchema={UpdateSchema}
+        initialValues={{
+          name: preValues ? preValues.name : "",
+          date: preValues
+            ? new Date(preValues.birthday + " UTC-3")
+            : new Date(),
+          cpf: preValues ? preValues.cpf : "",
+        }}
       >
         {({ values, errors, touched, setFieldValue }) => (
           <Form>
@@ -103,20 +134,42 @@ const NewPatientForm = ({ setNewPatient }) => {
                     console.log({ ...errors });
                     if (!(Object.keys(errors).length === 0))
                       return alert("Preencha todos os campos!");
-                    newPatient(values);
+                    updatePatient(values);
                   }}
                 >
                   Salvar
                 </Button>
-                <small className="form-text text-muted ms-3 me-3">
-                  <Badge bg="danger">OU</Badge>{" "}
-                </small>
+
+                {!finshUpdate && (
+                  <Button
+                    variant="secondary"
+                    className="btn btn-primary mt-3 ms-3"
+                    onClick={() => showUpdateForm(false)}
+                  >
+                    Cancelar
+                  </Button>
+                )}
+                {finshUpdate && (
+                  <Button
+                    variant="secondary"
+                    className="btn btn-primary ms-3 mt-3"
+                    onClick={() => {
+                      // Reload page
+                      window.location.reload(false);
+                    }}
+                  >
+                    Voltar
+                  </Button>
+                )}
                 <Button
-                  variant="secondary"
-                  className="btn btn-primary mt-3"
-                  onClick={() => setNewPatient(false)}
+                  variant="warning"
+                  className="btn btn-primary mt-3 ms-3"
+                  onClick={() => {
+                    clearCredentials();
+                    navegate("../");
+                  }}
                 >
-                  Já tenho cadastro
+                  Sair
                 </Button>
               </>
             )}
@@ -127,4 +180,4 @@ const NewPatientForm = ({ setNewPatient }) => {
   );
 };
 
-export default NewPatientForm;
+export default UpdatePatientForm;
