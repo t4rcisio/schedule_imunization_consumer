@@ -1,9 +1,16 @@
-import { Form, FormGroup, Button, Badge, Col, Spinner } from "react-bootstrap";
+import {
+  Form,
+  FormGroup,
+  Button,
+  Badge,
+  ToastContainer,
+  Toast,
+} from "react-bootstrap";
 import axiosClient from "../../utils/axios.js";
 import Loading from "../subcomponents/loading.js";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const LoginSchema = Yup.object().shape({
   cpf: Yup.string()
@@ -13,24 +20,23 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginPatientForm = ({ setNewPatient, setToken }) => {
-  const [response, setResponse] = useState(undefined);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [params, setParams] = useState(undefined);
 
   const custonFetch = async (cpf) => {
     axiosClient
       .post("/patient/login", { cpf })
       .then((res) => {
-        localStorage.setItem(process.env.REACT_APP_TOKEN_ID, res.data.token);
-        setResponse(res.data.token);
+        if (!res.data.error) {
+          localStorage.setItem(process.env.REACT_APP_TOKEN_ID, res.data.token);
+          setToken(true);
+        }
       })
       .catch((err) => {
         setError(err);
       })
       .finally(() => {
         setLoading(false);
-        setToken(true);
       });
   };
 
@@ -65,6 +71,13 @@ const LoginPatientForm = ({ setNewPatient, setToken }) => {
               {errors.cpf && touched.cpf && (
                 <small className="form-text text-muted">
                   <Badge bg="danger">{errors.cpf}</Badge>{" "}
+                </small>
+              )}
+              {error && (
+                <small className="form-text text-muted">
+                  <Badge bg="danger">
+                    Não foi possível localizar o usuário
+                  </Badge>{" "}
                 </small>
               )}
             </FormGroup>
