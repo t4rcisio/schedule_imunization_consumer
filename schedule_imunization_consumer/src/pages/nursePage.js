@@ -14,6 +14,7 @@ const NursePage = () => {
   const [error, setError] = useState(false);
   const [errorServer, setErrorServer] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const [type, setType] = useState("Clinic");
 
   const showLoginForm = (state) => {
@@ -61,8 +62,8 @@ const NursePage = () => {
                 <SessionCards
                   sessions={sessions}
                   type={type}
-                  setDelete={undefined}
-                  setIdDeletion={undefined}
+                  showPopUp={undefined}
+                  setId={undefined}
                 />
               ) : (
                 <></>

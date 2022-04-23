@@ -1,6 +1,6 @@
 import { ListGroup, ListGroupItem, Card, Badge, Button } from "react-bootstrap";
 
-const SessionCardPatient = ({ params, setDelete, setIdDeletion }) => {
+const SessionCardPatient = ({ params, showPopUp, setId }) => {
   const { sessionId, status, date, name, zipcode, address, district, number } =
     params;
   const [dateUTC] = date.split(".");
@@ -41,8 +41,8 @@ const SessionCardPatient = ({ params, setDelete, setIdDeletion }) => {
             <Button
               variant="danger"
               onClick={() => {
-                setDelete(true);
-                setIdDeletion(sessionId);
+                showPopUp(true);
+                setId(sessionId);
               }}
             >
               Desmarcar
@@ -54,8 +54,8 @@ const SessionCardPatient = ({ params, setDelete, setIdDeletion }) => {
   );
 };
 
-const SessionCardClinc = ({ params }) => {
-  const { sessionId, name, cpf, status } = params;
+const SessionCardClinc = ({ params, showpopUp, setId }) => {
+  const { id, name, cpf, status } = params;
 
   return (
     <ListGroupItem className="border-0">
@@ -77,7 +77,8 @@ const SessionCardClinc = ({ params }) => {
             <Button
               variant="danger"
               onClick={() => {
-                alert(sessionId);
+                showpopUp(true);
+                setId(id);
               }}
             >
               Atendimento Concluído
@@ -89,7 +90,7 @@ const SessionCardClinc = ({ params }) => {
   );
 };
 
-const SessionCards = ({ sessions, setDelete, setIdDeletion, type }) => {
+const SessionCards = ({ sessions, showPopUp, setId, type, changeStatus }) => {
   return (
     <>
       <Card className="mt-5">
@@ -109,20 +110,25 @@ const SessionCards = ({ sessions, setDelete, setIdDeletion, type }) => {
                   <SessionCardPatient
                     key={session.id}
                     params={params}
-                    setDelete={setDelete}
-                    setIdDeletion={setIdDeletion}
+                    showPopUp={showPopUp}
+                    setId={setId}
                   />
                 );
               } else if (type === "Clinic") {
                 const params = {
-                  sessionId: session.sessionId,
+                  id: session.sessionId,
                   status: session.status,
                   name: session.Patient.name,
                   cpf: session.Patient.cpf,
                 };
 
                 return (
-                  <SessionCardClinc key={session.sessionId} params={params} />
+                  <SessionCardClinc
+                    key={session.sessionId}
+                    params={params}
+                    showPopUp={showPopUp}
+                    setId={setId}
+                  />
                 );
               }
             })}

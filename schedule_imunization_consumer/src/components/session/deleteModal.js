@@ -1,8 +1,8 @@
 import { Modal, Button } from "react-bootstrap";
 
-const DeletionModal = ({ showDeletion, cancelDeletion, deleteSession }) => {
+const DeletionModal = ({ showModal, cancel, confirm }) => {
   return (
-    <Modal show={showDeletion} onHide={showDeletion}>
+    <Modal show={showModal} onHide={showModal}>
       <Modal.Header>
         <Modal.Title>Atenção!</Modal.Title>
       </Modal.Header>
@@ -14,7 +14,7 @@ const DeletionModal = ({ showDeletion, cancelDeletion, deleteSession }) => {
         <Button
           variant="secondary"
           onClick={() => {
-            cancelDeletion();
+            cancel();
           }}
         >
           Cancelar
@@ -22,7 +22,7 @@ const DeletionModal = ({ showDeletion, cancelDeletion, deleteSession }) => {
         <Button
           variant="warning"
           onClick={() => {
-            deleteSession(false);
+            confirm(false);
           }}
         >
           Desmarcar

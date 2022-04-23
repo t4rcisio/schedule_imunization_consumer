@@ -14,15 +14,15 @@ const HomePage = ({ updateSession, reloadSession }) => {
   const [type, setType] = useState("Patient");
 
   //Modal params
-  const [showDeletion, setDelete] = useState(false);
-  const [idDeletion, setIdDeletion] = useState("");
+  const [showModal, showPopUp] = useState(false);
+  const [idDeletion, setId] = useState("");
 
   const token = localStorage.getItem(process.env.REACT_APP_TOKEN_ID);
 
-  const cancelDeletion = () => setDelete(false);
-  const deleteSession = () => {
-    setDelete(false);
-
+  const cancel = () => showPopUp(false);
+  const confirm = () => {
+    showPopUp(false);
+    setLoading(true);
     custonFetch("delete", `/patient/sessions/delete/${idDeletion}`);
   };
 
@@ -58,17 +58,17 @@ const HomePage = ({ updateSession, reloadSession }) => {
     <>
       <Container>
         <DeletionModal
-          showDeletion={showDeletion}
-          cancelDeletion={cancelDeletion}
-          deleteSession={deleteSession}
+          showModal={showModal}
+          cancel={cancel}
+          confirm={confirm}
         />
         {isLoading && <Loading />}
         {sessions.length ? (
           <Container>
             <SessionCards
               sessions={sessions}
-              setDelete={setDelete}
-              setIdDeletion={setIdDeletion}
+              showPopUp={showPopUp}
+              setId={setId}
               type={type}
             />
           </Container>
