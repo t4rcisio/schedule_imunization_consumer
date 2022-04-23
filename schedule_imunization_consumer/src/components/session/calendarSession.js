@@ -34,6 +34,7 @@ const CalendarSession = ({ ...props }) => {
   return (
     <DatePicker
       showTimeSelect
+      timeIntervals={60}
       locale="br"
       dateFormat="dd-MM-yyyy HH:mm"
       minDate={new Date()}

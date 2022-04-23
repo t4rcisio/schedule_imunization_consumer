@@ -1,4 +1,4 @@
-import { Formik, Field, FieldArray } from "formik";
+import { Formik, Field} from "formik";
 import {
   Modal,
   Button,
@@ -50,7 +50,7 @@ const NewSession = ({
       return false;
     }
 
-    if (!(minutes === 0 || minutes === 30)) {
+    if (!(minutes === 0)) {
       setAlertDate(true);
       return false;
     }

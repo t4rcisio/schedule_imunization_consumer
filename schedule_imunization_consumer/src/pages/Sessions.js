@@ -1,0 +1,1 @@
+const Sessions = ({ arraySessions }) => {};
