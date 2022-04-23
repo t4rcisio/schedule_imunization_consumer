@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Container } from "react-bootstrap";
 import axiosClient from "../../utils/axios.js";
-import PatientSessionCards from "../session/patientSessionCards.js";
+import SessionCards from "../session/sessionCards.js";
 import DeletionModal from "../session/deleteModal.js";
 import Loading from "../subcomponents/loading.js";
 
@@ -11,6 +11,7 @@ const HomePage = ({ updateSession, reloadSession }) => {
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [empty, setEmpty] = useState(false);
+  const [type, setType] = useState("Patient");
 
   //Modal params
   const [showDeletion, setDelete] = useState(false);
@@ -64,10 +65,11 @@ const HomePage = ({ updateSession, reloadSession }) => {
         {isLoading && <Loading />}
         {sessions.length ? (
           <Container>
-            <PatientSessionCards
+            <SessionCards
               sessions={sessions}
               setDelete={setDelete}
               setIdDeletion={setIdDeletion}
+              type={type}
             />
           </Container>
         ) : null}
