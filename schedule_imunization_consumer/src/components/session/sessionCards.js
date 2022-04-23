@@ -92,43 +92,40 @@ const SessionCardClinc = ({ params }) => {
 const SessionCards = ({ sessions, setDelete, setIdDeletion, type }) => {
   return (
     <>
-      <Card className="mt-5">
-        <Card.Header>Meus Agendamentos</Card.Header>
-        <Card.Body>
-          <ListGroup>
-            {sessions.map((session) => {
-              if (type === "Patient") {
-                const sesId = session.id;
-                const params = {
-                  sessionId: sesId,
-                  status: session.status,
-                  date: session.Session.date,
-                  ...session.Session.clinic,
-                };
-                return (
-                  <SessionCardPatient
-                    key={session.id}
-                    params={params}
-                    setDelete={setDelete}
-                    setIdDeletion={setIdDeletion}
-                  />
-                );
-              } else if (type === "Clinic") {
-                const params = {
-                  sessionId: session.sessionId,
-                  status: session.status,
-                  name: session.Patient.name,
-                  cpf: session.Patient.cpf,
-                };
+      <Card.Body>
+        <ListGroup>
+          {sessions.map((session) => {
+            if (type === "Patient") {
+              const sesId = session.id;
+              const params = {
+                sessionId: sesId,
+                status: session.status,
+                date: session.Session.date,
+                ...session.Session.clinic,
+              };
+              return (
+                <SessionCardPatient
+                  key={session.id}
+                  params={params}
+                  setDelete={setDelete}
+                  setIdDeletion={setIdDeletion}
+                />
+              );
+            } else if (type === "Clinic") {
+              const params = {
+                sessionId: session.id,
+                status: session.status,
+                name: session.Patient.name,
+                cpf: session.Patient.cpf,
+              };
 
-                return (
-                  <SessionCardClinc key={session.sessionId} params={params} />
-                );
-              }
-            })}
-          </ListGroup>
-        </Card.Body>
-      </Card>
+              return (
+                <SessionCardClinc key={session.sessionId} params={params} />
+              );
+            }
+          })}
+        </ListGroup>
+      </Card.Body>
     </>
   );
 };

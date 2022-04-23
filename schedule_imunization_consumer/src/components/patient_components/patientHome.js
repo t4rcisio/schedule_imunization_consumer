@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container } from "react-bootstrap";
+import { Card, Container } from "react-bootstrap";
 import axiosClient from "../../utils/axios.js";
 import SessionCards from "../session/sessionCards.js";
 import DeletionModal from "../session/deleteModal.js";
@@ -65,12 +65,15 @@ const HomePage = ({ updateSession, reloadSession }) => {
         {isLoading && <Loading />}
         {sessions.length ? (
           <Container>
-            <SessionCards
-              sessions={sessions}
-              setDelete={setDelete}
-              setIdDeletion={setIdDeletion}
-              type={type}
-            />
+            <Card className="mt-5">
+              <Card.Header>Meus gendamentos</Card.Header>
+              <SessionCards
+                sessions={sessions}
+                setDelete={setDelete}
+                setIdDeletion={setIdDeletion}
+                type={type}
+              />
+            </Card>
           </Container>
         ) : null}
         {error && <h1>Falha na conexão com o servidor</h1>}

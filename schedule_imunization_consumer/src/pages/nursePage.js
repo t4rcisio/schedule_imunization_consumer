@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Row, Card, Button, Accordion } from "react-bootstrap";
+import { Container, Row, Card, Button, Badge } from "react-bootstrap";
 import FormLogin from "../components/forms/formLogin.js";
 import FormCreate from "../components/forms/formCreate.js";
 import Search from "../components/forms/formSearch.js";
@@ -37,7 +37,6 @@ const NursePage = () => {
               <Button> Gerenciar unidades</Button>
             </Card.Header>
             <Card.Body>
-              {loading && <Loading />}
               {token && (
                 <>
                   {token && (
@@ -48,26 +47,48 @@ const NursePage = () => {
                       setLoading={setLoading}
                     />
                   )}
+                  {error && (
+                    <small>
+                      <Badge pill bg="danger">
+                        Não foi possível verificar a data
+                      </Badge>
+                    </small>
+                  )}
+                  {errorServer && (
+                    <small>
+                      <Badge pill bg="danger">
+                        Falha de conexão
+                      </Badge>
+                    </small>
+                  )}
                 </>
               )}
             </Card.Body>
 
+            {token && !sessions && <>Preencha os campos para pesquisar</>}
+            {token && !sessions.length && (
+              <>Não há sessões para o local e data indicados</>
+            )}
             <Card.Body>
               {!token && signin && (
                 <FormLogin setToken={setToken} showLoginForm={showLoginForm} />
               )}
               {!token && signup && <FormCreate showLoginForm={showLoginForm} />}
               {sessions.length ? (
-                <SessionCards
-                  sessions={sessions}
-                  type={type}
-                  setDelete={undefined}
-                  setIdDeletion={undefined}
-                />
+                <Card className="mt-5">
+                  <Card.Header>Agendamentos de vacinação</Card.Header>
+                  <SessionCards
+                    sessions={sessions}
+                    type={type}
+                    setDelete={undefined}
+                    setIdDeletion={undefined}
+                  />
+                </Card>
               ) : (
                 <></>
               )}
               <></>
+              {loading && <Loading />}
             </Card.Body>
           </Card>
         </Row>

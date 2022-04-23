@@ -6,6 +6,13 @@ import axiosClient from "../../utils/axios.js";
 import { useState } from "react";
 import * as Yup from "yup";
 
+const SearchSchema = Yup.object().shape({
+  clinic: Yup.string().required("Informar seu nome é obrigatório"),
+  date: Yup.date()
+    .max(Date(), "A vacinação está disponível apenas para maiores de 5 anos!")
+    .required("É preciso informar a data do seu nascimento"),
+});
+
 const Search = ({ setArraySessions, setError, setErrorServer, setLoading }) => {
   const [token, setToken] = useState(undefined);
 
@@ -53,7 +60,10 @@ const Search = ({ setArraySessions, setError, setErrorServer, setLoading }) => {
 
   return (
     <>
-      <Formik initialValues={{ clinic: " ", date: new Date() }}>
+      <Formik
+        validationSchema={SearchSchema}
+        initialValues={{ clinic: " ", date: new Date() }}
+      >
         {({ values }) => (
           <Form>
             <FormGroup>
