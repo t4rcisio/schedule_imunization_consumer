@@ -5,6 +5,7 @@ import { Formik, Field } from "formik";
 import Loading from "../subcomponents/loading.js";
 import axiosClient from "../../utils/axios.js";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -38,8 +39,9 @@ const FormCreate = ({ showLoginForm }) => {
       axiosClient
         .post("/patient/new", { ...params })
         .then((res) => {
-          if (!res.data.error) alert("Done");
-          else alert("Usuário já cadastrado");
+          if (!res.data.error) {
+            alert("Usuário criado com sucesso");
+          } else alert("Usuário já cadastrado");
         })
         .catch((err) => {
           alert(err);
@@ -87,7 +89,7 @@ const FormCreate = ({ showLoginForm }) => {
               <label>Data de nascimento</label>
               <Calendar name="date" type="date" />
               <br />
-              {errors.date && (
+              {errors.date && touched.date && (
                 <small className="form-text text-muted">
                   <Badge bg="danger">{errors.date}</Badge>{" "}
                 </small>
@@ -108,12 +110,9 @@ const FormCreate = ({ showLoginForm }) => {
                 >
                   Salvar
                 </Button>
-                <small className="form-text text-muted ms-3 me-3">
-                  <Badge bg="danger">OU</Badge>{" "}
-                </small>
                 <Button
                   variant="secondary"
-                  className="btn btn-primary mt-3"
+                  className="btn btn-primary ms-3 mt-3"
                   onClick={() => showLoginForm(true)}
                 >
                   Já tenho cadastro

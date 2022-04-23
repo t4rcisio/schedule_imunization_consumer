@@ -1,15 +1,12 @@
 import { Modal, Button } from "react-bootstrap";
 
-const DeletionModal = ({ showModal, cancel, confirm }) => {
+const AlertModal = ({ showModal, cancel, confirm, data }) => {
   return (
     <Modal show={showModal} onHide={showModal}>
       <Modal.Header>
-        <Modal.Title>Atenção!</Modal.Title>
+        <Modal.Title>{data.title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        Tem certeza que deseja desmarcar essa sessão? <br />A ação não poderá
-        ser desfeita!
-      </Modal.Body>
+      <Modal.Body>{data.message}</Modal.Body>
       <Modal.Footer>
         <Button
           variant="secondary"
@@ -17,19 +14,19 @@ const DeletionModal = ({ showModal, cancel, confirm }) => {
             cancel();
           }}
         >
-          Cancelar
+          {data.cancel}
         </Button>
         <Button
           variant="warning"
           onClick={() => {
-            confirm(false);
+            confirm();
           }}
         >
-          Desmarcar
+          {data.confirm}
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default DeletionModal;
+export default AlertModal;

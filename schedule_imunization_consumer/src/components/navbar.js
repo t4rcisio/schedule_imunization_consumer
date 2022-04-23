@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Nav, Container, Navbar } from "react-bootstrap";
 import ModalSwitch from "./modalSwitch";
 import { useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 const NavBar = () => {
   const [modal, showModal] = useState(false);
@@ -9,8 +10,14 @@ const NavBar = () => {
   const navegate = useNavigate();
 
   const switchPage = (page) => {
-    if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID)) showModal(true);
-    else navegate(page);
+    const token = localStorage.getItem(process.env.REACT_APP_TOKEN_ID);
+    if (token) {
+      const payload = jwtDecode(token);
+      const { permission } = payload;
+
+      if ("/" + permission === page) navegate(page);
+      else showModal(true);
+    } else navegate(page);
   };
 
   return (
