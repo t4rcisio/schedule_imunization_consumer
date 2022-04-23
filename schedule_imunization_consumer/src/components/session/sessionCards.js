@@ -54,7 +54,7 @@ const SessionCardPatient = ({ params, showPopUp, setId }) => {
   );
 };
 
-const SessionCardClinc = ({ params, showpopUp, setId }) => {
+const SessionCardClinic = ({ params, showPopUp, setId }) => {
   const { id, name, cpf, status } = params;
 
   return (
@@ -77,7 +77,7 @@ const SessionCardClinc = ({ params, showpopUp, setId }) => {
             <Button
               variant="danger"
               onClick={() => {
-                showpopUp(true);
+                showPopUp(true);
                 setId(id);
               }}
             >
@@ -90,7 +90,7 @@ const SessionCardClinc = ({ params, showpopUp, setId }) => {
   );
 };
 
-const SessionCards = ({ sessions, showPopUp, setId, type, changeStatus }) => {
+const SessionCards = ({ sessions, showPopUp, setId, type }) => {
   return (
     <>
       <Card className="mt-5">
@@ -116,15 +116,15 @@ const SessionCards = ({ sessions, showPopUp, setId, type, changeStatus }) => {
                 );
               } else if (type === "Clinic") {
                 const params = {
-                  id: session.sessionId,
+                  id: session.id,
                   status: session.status,
                   name: session.Patient.name,
                   cpf: session.Patient.cpf,
                 };
 
                 return (
-                  <SessionCardClinc
-                    key={session.sessionId}
+                  <SessionCardClinic
+                    key={session.id}
                     params={params}
                     showPopUp={showPopUp}
                     setId={setId}

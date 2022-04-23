@@ -2,8 +2,16 @@ import { useState } from "react";
 import { Container } from "react-bootstrap";
 import axiosClient from "../../utils/axios.js";
 import SessionCards from "../session/sessionCards.js";
-import DeletionModal from "../session/deleteModal.js";
+import AlertModal from "../session/alertModal.js";
 import Loading from "../subcomponents/loading.js";
+
+const data = {
+  title: "Atenção!",
+  message:
+    "Tem certeza que deseja desmarcar essa sessão? <br />A ação não poderá ser desfeita!",
+  cancel: "Cancelar",
+  confirm: "Desmarcar",
+};
 
 const HomePage = ({ updateSession, reloadSession }) => {
   //Fetch hooks
@@ -57,10 +65,11 @@ const HomePage = ({ updateSession, reloadSession }) => {
   return (
     <>
       <Container>
-        <DeletionModal
+        <AlertModal
           showModal={showModal}
           cancel={cancel}
           confirm={confirm}
+          data={data}
         />
         {isLoading && <Loading />}
         {sessions.length ? (
