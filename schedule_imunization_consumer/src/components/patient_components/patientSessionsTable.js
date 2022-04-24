@@ -13,13 +13,14 @@ const data = {
   confirm: "Desmarcar",
 };
 
+const type = "Patient";
+
 const HomePage = ({ updateSession, reloadSession }) => {
   //Fetch hooks
   const [sessions, setSessions] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [empty, setEmpty] = useState(false);
-  const [type, setType] = useState("Patient");
 
   //Modal params
   const [showModal, showPopUp] = useState(false);
