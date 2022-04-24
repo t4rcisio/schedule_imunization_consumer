@@ -66,7 +66,7 @@ const Search = ({ setArraySessions, setError, setErrorServer, setLoading }) => {
     <>
       <Formik
         validationSchema={SearchSchema}
-        initialValues={{ clinic: " ", date: new Date() }}
+        initialValues={{ clinic: "", date: new Date() }}
       >
         {({ values, errors }) => (
           <Form>
