@@ -1,12 +1,5 @@
 import { Formik, Field } from "formik";
-import {
-  Modal,
-  Button,
-  Form,
-  FormGroup,
-  Badge,
-  Card,
-} from "react-bootstrap";
+import { Modal, Button, Form, FormGroup, Badge, Card } from "react-bootstrap";
 import OptionsForm from "../subcomponents/optionsFormClinic.js";
 import { useState } from "react";
 import * as Yup from "yup";
@@ -69,11 +62,7 @@ const NewSession = ({
 
     const custonFetch = () => {
       axiosClient
-        .post(
-          "/patient/sessions/new",
-          { ...params },
-          { headers: { token: token } }
-        )
+        .post("/session/new", { ...params }, { headers: { token: token } })
         .then((res) => {
           if (!res.data.error) {
             reloadSession(true);

@@ -1,7 +1,6 @@
 import { Form, FormGroup, Button, Badge } from "react-bootstrap";
 import { useState } from "react";
 import jwtDecode from "jwt-decode";
-import Calendar from "../calendar/calendar.js";
 import { Formik, Field } from "formik";
 import Loading from "../subcomponents/loading.js";
 import axiosClient from "../../utils/axios.js";
@@ -17,12 +16,14 @@ const UpdateSchema = Yup.object().shape({
     .min(11, "Hii... não está correto")
     .max(11, "Hii... não está correto")
     .required("Informar o CPF é obrigatório"),
-  date: Yup.date()
-    .max(Date(), "A vacinação está disponível apenas para maiores de 5 anos!")
-    .required("É preciso informar a data do seu nascimento"),
+  password: Yup.string()
+    .min(8, "A senha possui pelo menos 8 caracteres")
+    .required("Digite sua senha"),
 });
 
-const UpdatePatientForm = ({ showUpdateForm }) => {
+const path = "../nurse";
+
+const FormNurseUpdate = ({ showUpdateForm }) => {
   const [loading, setLoading] = useState(false);
   const [userToken, setToken] = useState("");
   const [finshUpdate, setExit] = useState(false);
@@ -36,11 +37,8 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
   if (userToken && !payload) setPyload(jwtDecode(userToken));
 
   if (payload && !preValues) {
-    const [date] = payload.birthday.split("T");
-    setValues({ name: payload.name, cpf: payload.cpf, birthday: date });
+    setValues({ name: payload.name, cpf: payload.cpf });
   }
-  console.log(preValues);
-  console.log({ payload: payload, userToken: userToken });
 
   const clearCredentials = () => {
     localStorage.removeItem(process.env.REACT_APP_TOKEN_ID);
@@ -48,24 +46,25 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
 
   const updatePatient = async (values) => {
     setLoading(true);
-    const ndate = values.date.toISOString();
-    const [date] = ndate.split("T");
 
     const params = {
       name: values.name,
-      birthday: date,
       cpf: values.cpf,
+      password: values.password,
     };
 
     const custonFetch = async () => {
       axiosClient
-        .post("/patient/edit", { ...params }, { headers: { token: userToken } })
+        .post("/nurse/edit", { ...params }, { headers: { token: userToken } })
         .then((res) => {
+          console.log(res.data);
+
           if (!res.data.error) {
             setExit(true);
             alert("Seus dados foram atualizados");
             clearCredentials();
-          } else alert("error");
+            navegate("../");
+          } else alert(res.data.error);
         })
         .catch((err) => {
           alert(err);
@@ -84,13 +83,11 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
         validationSchema={UpdateSchema}
         initialValues={{
           name: preValues ? preValues.name : "",
-          date: preValues
-            ? new Date(preValues.birthday + " UTC-3")
-            : new Date(),
           cpf: preValues ? preValues.cpf : "",
+          password: "",
         }}
       >
-        {({ values, errors, touched, setFieldValue }) => (
+        {({ values, errors, touched }) => (
           <Form>
             <FormGroup>
               <label>Nome</label>
@@ -115,12 +112,14 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
               )}
             </FormGroup>
             <FormGroup>
-              <label>Data de nascimento</label>
-              <Calendar name="date" type="date" />
               <br />
-              {errors.date && (
+              <label>Senha atual</label>
+              <br />
+              <Field type="password" name="password" />
+              <br />
+              {errors.password && touched.password && (
                 <small className="form-text text-muted">
-                  <Badge bg="danger">{errors.date}</Badge>{" "}
+                  <Badge bg="danger">{errors.password}</Badge>{" "}
                 </small>
               )}
             </FormGroup>
@@ -155,7 +154,7 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
                     className="btn btn-primary ms-3 mt-3"
                     onClick={() => {
                       // Reload page
-                      window.location.reload(false);
+                      navegate(path);
                     }}
                   >
                     Voltar
@@ -180,4 +179,4 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
   );
 };
 
-export default UpdatePatientForm;
+export default FormNurseUpdate;

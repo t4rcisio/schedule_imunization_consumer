@@ -81,7 +81,7 @@ const SessionCardClinic = ({ params, showPopUp, setId }) => {
                 setId(id);
               }}
             >
-              Atendimento Concluído
+              Marcar como concluído
             </Button>
           )}
         </Card.Footer>

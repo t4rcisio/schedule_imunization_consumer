@@ -7,6 +7,7 @@ import Loading from "../components/subcomponents/loading.js";
 import SessionCards from "../components/cards&tables/sessionCards.js";
 import axiosClient from "../utils/axios.js";
 import AlertModal from "../components/modals/alertModal.js";
+import FormNurseUpdate from "../components/forms/formUpdateNurse.js";
 
 const data = {
   title: "Atenção!",
@@ -26,6 +27,8 @@ const NursePage = () => {
   const [errorServer, setErrorServer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorUpdate, setErrorUpdate] = useState(false);
+  const [showProfile, setProfile] = useState(false);
+  const [reload, setReload] = useState(false);
 
   //Modal params
   const [showModal, showPopUp] = useState(false);
@@ -49,22 +52,25 @@ const NursePage = () => {
     setSignup(false);
   }
 
-  const custonFetch = async (method, payload, url) => {
-    console.log(payload);
-    axiosClient[method](
-      url,
-      { ...payload },
-      {
-        headers: { token: token },
-      }
-    )
+  const custonFetch = async (payload) => {
+    setArraySessions([]);
+    console.log({ payload: payload, token: token });
+    axiosClient
+      .post(
+        "/session/patient/confirm",
+        { ...payload },
+        {
+          headers: { token: token },
+        }
+      )
       .then((res) => {
-        console.log(res.data);
-        if (res.data.error) setErrorUpdate(true);
-        else console.log("reload");
+        console.log({ res: res.data });
+        if (!res.data.error) {
+          setReload(true);
+        } else setErrorUpdate(true);
       })
       .catch((err) => {
-        console.log(err);
+        console.log({ err: err });
         setErrorUpdate(true);
       })
       .finally(() => {
@@ -78,7 +84,7 @@ const NursePage = () => {
       id: idUpdate,
       status: "Done",
     };
-    custonFetch("post", params, "/session/patient/confirm");
+    custonFetch(params);
   };
 
   return (
@@ -94,22 +100,24 @@ const NursePage = () => {
           <Card>
             {token && (
               <Card.Header className="text-end">
-                <Button className="me-3"> Meu Perfil</Button>
-                <Button> Gerenciar unidades</Button>
+                <Button className="me-3" onClick={() => setProfile(true)}>
+                  Meu Perfil
+                </Button>
               </Card.Header>
             )}
             <Card.Body>
-              {token && (
-                <>
-                  {token && (
-                    <Search
-                      setArraySessions={setArraySessions}
-                      setError={setError}
-                      setErrorServer={setErrorServer}
-                      setLoading={setLoading}
-                    />
-                  )}
-                </>
+              {token && showProfile && (
+                <FormNurseUpdate showUpdateForm={setProfile} />
+              )}
+              {token && !showProfile && (
+                <Search
+                  setArraySessions={setArraySessions}
+                  setError={setError}
+                  setErrorServer={setErrorServer}
+                  setLoading={setLoading}
+                  reload={reload}
+                  setReload={setReload}
+                />
               )}
               {errorUpdate && (
                 <Badge pill bg="warning" text="dark">
@@ -124,7 +132,7 @@ const NursePage = () => {
               {!token && signup && (
                 <FormCreateNurse showLoginForm={showLoginForm} />
               )}
-              {sessions.length ? (
+              {sessions.length && !showProfile ? (
                 <SessionCards
                   sessions={sessions}
                   type={type}

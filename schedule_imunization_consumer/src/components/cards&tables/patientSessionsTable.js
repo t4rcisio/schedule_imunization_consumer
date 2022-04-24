@@ -32,7 +32,7 @@ const HomePage = ({ updateSession, reloadSession }) => {
   const confirm = () => {
     showPopUp(false);
     setLoading(true);
-    custonFetch("delete", `/patient/sessions/delete/${idDeletion}`);
+    custonFetch("delete", `/session/delete/${idDeletion}`);
   };
 
   const custonFetch = async (method, url) => {
@@ -60,7 +60,7 @@ const HomePage = ({ updateSession, reloadSession }) => {
 
   if (updateSession) {
     reloadSession(false);
-    custonFetch("get", "/patient/sessions/scheduled");
+    custonFetch("get", "/patient/scheduled");
   }
 
   return (

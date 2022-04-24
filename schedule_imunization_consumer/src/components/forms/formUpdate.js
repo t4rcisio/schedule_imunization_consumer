@@ -22,6 +22,8 @@ const UpdateSchema = Yup.object().shape({
     .required("É preciso informar a data do seu nascimento"),
 });
 
+const path = "../patient";
+
 const UpdatePatientForm = ({ showUpdateForm }) => {
   const [loading, setLoading] = useState(false);
   const [userToken, setToken] = useState("");
@@ -72,6 +74,7 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
         })
         .finally(() => {
           setLoading(false);
+          navegate(path);
         });
     };
 
@@ -155,7 +158,7 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
                     className="btn btn-primary ms-3 mt-3"
                     onClick={() => {
                       // Reload page
-                      window.location.reload(false);
+                      navegate(path);
                     }}
                   >
                     Voltar

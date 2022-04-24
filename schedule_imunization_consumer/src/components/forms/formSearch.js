@@ -11,9 +11,17 @@ const SearchSchema = Yup.object().shape({
   date: Yup.date().required("Preencha o campo com uma data e horário"),
 });
 
-const Search = ({ setArraySessions, setError, setErrorServer, setLoading }) => {
+const Search = ({
+  setArraySessions,
+  setError,
+  setErrorServer,
+  setLoading,
+  reload,
+  setReload,
+}) => {
   const [token, setToken] = useState(undefined);
   const [dateError, setErrorDate] = useState(false);
+  const [paramsData, setParams] = useState(undefined);
 
   if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID) && !token)
     setToken(localStorage.getItem(process.env.REACT_APP_TOKEN_ID));
@@ -21,7 +29,7 @@ const Search = ({ setArraySessions, setError, setErrorServer, setLoading }) => {
   const custonFetch = (params) => {
     setLoading(true);
     axiosClient
-      .post("/nurse/search", params, { headers: { token: token } })
+      .post("/session/search", params, { headers: { token: token } })
       .then((res) => {
         const data = Object.values(res.data);
         if (data.length) {
@@ -61,6 +69,14 @@ const Search = ({ setArraySessions, setError, setErrorServer, setLoading }) => {
 
     custonFetch(params);
   };
+
+  if (reload) {
+    console.log("Reloadin: reloading");
+    console.log({ params: { ...paramsData } });
+
+    setReload(false);
+    getSessions(paramsData);
+  }
 
   return (
     <>
@@ -102,7 +118,10 @@ const Search = ({ setArraySessions, setError, setErrorServer, setLoading }) => {
                   className="mt-2"
                   onClick={() => {
                     setErrorDate(false);
-                    if (!Object.values(errors).length) getSessions(values);
+                    if (!Object.values(errors).length) {
+                      setParams(values);
+                      getSessions(values);
+                    }
                   }}
                 >
                   Pesquisar
