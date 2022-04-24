@@ -1,3 +1,9 @@
+/*
+
+ -> Generate form to nurse view profile information
+
+*/
+
 import { Form, FormGroup, Button, Badge } from "react-bootstrap";
 import { useState } from "react";
 import jwtDecode from "jwt-decode";
@@ -7,6 +13,7 @@ import axiosClient from "../../utils/axios.js";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
+// input schema validator
 const UpdateSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "Esse nome não é válido")
@@ -21,6 +28,7 @@ const UpdateSchema = Yup.object().shape({
     .required("Digite sua senha"),
 });
 
+// set path
 const path = "../nurse";
 
 const FormNurseUpdate = ({ showUpdateForm }) => {
@@ -34,16 +42,20 @@ const FormNurseUpdate = ({ showUpdateForm }) => {
   if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID) && !userToken)
     setToken(localStorage.getItem(process.env.REACT_APP_TOKEN_ID));
 
+  // Load account information from token
   if (userToken && !payload) setPyload(jwtDecode(userToken));
 
+  // Set information from payload
   if (payload && !preValues) {
     setValues({ name: payload.name, cpf: payload.cpf });
   }
 
+  //When user click on "Sair" button, credential must be deleted from local storage
   const clearCredentials = () => {
     localStorage.removeItem(process.env.REACT_APP_TOKEN_ID);
   };
 
+  // Update data
   const updatePatient = async (values) => {
     setLoading(true);
 
@@ -57,8 +69,6 @@ const FormNurseUpdate = ({ showUpdateForm }) => {
       axiosClient
         .post("/nurse/edit", { ...params }, { headers: { token: userToken } })
         .then((res) => {
-          console.log(res.data);
-
           if (!res.data.error) {
             setExit(true);
             alert("Seus dados foram atualizados");

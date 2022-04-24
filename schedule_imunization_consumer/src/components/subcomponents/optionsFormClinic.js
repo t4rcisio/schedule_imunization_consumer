@@ -1,6 +1,11 @@
+/*
+
+ -> Generate a list of clinics stored on Clinics database
+
+*/
+
 import { useState } from "react";
 import axiosClient from "../../utils/axios";
-import Loading from "./loading.js";
 
 const ClinicLabel = ({ params }) => {
   const { name, id } = params;

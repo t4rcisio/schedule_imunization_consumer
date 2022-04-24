@@ -1,9 +1,16 @@
+/*
+
+ -> Generate a modal to alert user before ambient switch  
+
+*/
+
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const ModalSwitch = ({ showModal, link }) => {
   const navegate = useNavigate();
 
+  // If user confirm, credential must be deleted from local storage
   const clearCredentials = () => {
     localStorage.removeItem(process.env.REACT_APP_TOKEN_ID);
   };

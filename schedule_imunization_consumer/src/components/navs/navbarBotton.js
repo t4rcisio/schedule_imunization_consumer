@@ -1,6 +1,13 @@
+/*
+
+ -> Generate a botton bar to show some links
+
+*/
+
 import { Nav, Row, Col } from "react-bootstrap";
 
 const NavbarBotton = () => {
+  // Zoom efect on links
   const zoom = (element, size) => {
     const data = document.getElementById(element);
     data.style.fontSize = `${size}px`;

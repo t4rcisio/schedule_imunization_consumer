@@ -1,3 +1,9 @@
+/*
+
+-> Patient Page
+
+*/
+
 import FormCreate from "../components/forms/formCreate.js";
 import FormLogin from "../components/forms/formLogin.js";
 import HomePage from "../components/cards&tables/patientSessionsTable.js";

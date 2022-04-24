@@ -1,3 +1,9 @@
+/*
+
+ -> Generate form to search sessions (nurse page only)
+
+*/
+
 import { Field, Formik } from "formik";
 import { Badge, Button, Form, FormGroup, Row } from "react-bootstrap";
 import CalendarSession from "../calendar/calendarSession.js";
@@ -6,6 +12,7 @@ import axiosClient from "../../utils/axios.js";
 import { useState } from "react";
 import * as Yup from "yup";
 
+//input schema validator
 const SearchSchema = Yup.object().shape({
   clinic: Yup.string().required("Selecione uma unidade de saúde"),
   date: Yup.date().required("Preencha o campo com uma data e horário"),
@@ -24,11 +31,14 @@ const Search = ({
   const [dateError, setErrorDate] = useState(false);
   const [paramsData, setParams] = useState(undefined);
 
+  // read token
   if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID) && !token)
     setToken(localStorage.getItem(process.env.REACT_APP_TOKEN_ID));
 
   const custonFetch = (params) => {
     setLoading(true);
+
+    //conncetion to database
     axiosClient
       .post("/session/search", params, { headers: { token: token } })
       .then((res) => {
@@ -40,7 +50,6 @@ const Search = ({
           setArraySessions([]);
           setError(true);
         }
-        console.log(res.data);
       })
       .catch((err) => {
         setError(false);
@@ -55,6 +64,7 @@ const Search = ({
     setErrorUpdate(false);
     const { clinic, date } = values;
 
+    // Adjust and verify date and time
     const ndate = new Date(date);
     if (ndate <= new Date()) return setErrorDate(true);
 
@@ -72,10 +82,8 @@ const Search = ({
     custonFetch(params);
   };
 
+  // To reload list after update session
   if (reload) {
-    console.log("Reloadin: reloading");
-    console.log({ params: { ...paramsData } });
-
     setReload(false);
     getSessions(paramsData);
   }

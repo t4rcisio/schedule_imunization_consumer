@@ -1,3 +1,9 @@
+/*
+
+-> Nurse Page
+
+*/
+
 import { useState } from "react";
 import { Container, Row, Card, Button, Badge } from "react-bootstrap";
 import FormLogin from "../components/forms/formLogin.js";
@@ -54,7 +60,7 @@ const NursePage = () => {
 
   const custonFetch = async (payload) => {
     setArraySessions([]);
-    console.log({ payload: payload, token: token });
+
     axiosClient
       .post(
         "/session/patient/confirm",
@@ -70,7 +76,6 @@ const NursePage = () => {
         } else setErrorUpdate(true);
       })
       .catch((err) => {
-        console.log({ err: err });
         setErrorUpdate(true);
       })
       .finally(() => {

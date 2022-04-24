@@ -1,3 +1,9 @@
+/*
+
+ -> Generate form to create a new Patient session
+
+*/
+
 import { Formik, Field } from "formik";
 import { Modal, Button, Form, FormGroup, Badge, Card } from "react-bootstrap";
 import OptionsForm from "../subcomponents/optionsFormClinic.js";
@@ -7,6 +13,7 @@ import axiosClient from "../../utils/axios.js";
 import CalendarSession from "../calendar/calendarSession.js";
 import Loading from "../subcomponents/loading.js";
 
+// Form schema validator
 const SessionSchema = Yup.object().shape({
   clinic: Yup.string()
     .min(2, "Selecione uma opção válida")
@@ -32,6 +39,7 @@ const NewSession = ({
     const ndate = new Date(values.date);
     const minutes = ndate.getMinutes();
 
+    // Vefiy time params
     if (new Date() >= ndate) {
       setAlertDate(true);
       return false;
@@ -52,14 +60,15 @@ const NewSession = ({
   const buidSession = (values) => {
     setLoading(true);
     const ndate = new Date(values.date);
+
+    //body params
     const params = {
       date: ndate.toLocaleDateString(),
       time: ndate.toLocaleTimeString(),
       clinicId: values.clinic,
     };
 
-    console.log({ params: { ...params } });
-
+    //database connection
     const custonFetch = () => {
       axiosClient
         .post("/session/new", { ...params }, { headers: { token: token } })
@@ -73,7 +82,7 @@ const NewSession = ({
           }
         })
         .catch((err) => {
-          console.log(err);
+          setError(err);
         })
         .finally(() => {
           setLoading(false);

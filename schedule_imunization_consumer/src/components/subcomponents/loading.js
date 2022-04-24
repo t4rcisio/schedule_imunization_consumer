@@ -1,3 +1,9 @@
+/*
+
+ -> Generate a loading animation
+
+*/
+
 import { Col, Spinner } from "react-bootstrap";
 
 const Loading = () => {

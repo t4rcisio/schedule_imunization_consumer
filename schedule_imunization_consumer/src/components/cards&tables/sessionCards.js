@@ -1,10 +1,21 @@
+/*
+
+ -> Generate session cards
+
+ This componet provide two cards styles,
+ 1: from Patient view
+ 2: from Nurse view
+*/
+
 import { ListGroup, ListGroupItem, Card, Badge, Button } from "react-bootstrap";
 
+// Patient model card
 const SessionCardPatient = ({ params, showPopUp, setId }) => {
   const { sessionId, status, date, name, zipcode, address, district, number } =
     params;
-  const [dateUTC] = date.split(".");
 
+  // Adjust date and time format
+  const [dateUTC] = date.split(".");
   const sessionDate = new Date(dateUTC);
   const data = sessionDate.toLocaleDateString();
   const [month, day, year] = data.split("/");
@@ -54,6 +65,7 @@ const SessionCardPatient = ({ params, showPopUp, setId }) => {
   );
 };
 
+// Nurse session card
 const SessionCardClinic = ({ params, showPopUp, setId }) => {
   const { id, name, cpf, status } = params;
 
@@ -98,6 +110,7 @@ const SessionCards = ({ sessions, showPopUp, setId, type }) => {
         <Card.Body>
           <ListGroup>
             {sessions.map((session) => {
+              // Grenerate itens from array received from database
               if (type === "Patient") {
                 const sesId = session.id;
                 const params = {

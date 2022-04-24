@@ -1,3 +1,9 @@
+/*
+
+ -> Generate toast to notify erros
+
+*/
+
 import { Row, Col, Toast } from "react-bootstrap";
 
 const ToastNotification = ({ message, showNotification, setShow }) => {

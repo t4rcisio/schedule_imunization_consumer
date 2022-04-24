@@ -1,3 +1,9 @@
+/*
+
+ -> Generate form to create a new Patient account
+
+*/
+
 import { Form, FormGroup, Button, Badge } from "react-bootstrap";
 import { useState } from "react";
 import Calendar from "../calendar/calendar.js";
@@ -7,6 +13,7 @@ import axiosClient from "../../utils/axios.js";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 
+// Schema model to validate inputs
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "Esse nome não é válido")
@@ -21,22 +28,28 @@ const SignupSchema = Yup.object().shape({
     .required("É preciso informar a data do seu nascimento"),
 });
 
+// Generate form to create a new Patient account
 const FormCreate = ({ showLoginForm }) => {
   const [loading, setLoading] = useState(false);
   const navegate = useNavigate();
 
-  const newPatient = async (values) => {
+  //To save data on database
+  const newPatient = (values) => {
     setLoading(true);
+
+    // Adjust date and time
     const ndate = values.date.toISOString();
     const [date] = ndate.split("T");
 
+    // body params
     const params = {
       name: values.name,
       birthday: date,
       cpf: values.cpf,
     };
 
-    const custonFetch = async () => {
+    //Connect to databse
+    const custonFetch = () => {
       axiosClient
         .post("/patient/new", { ...params })
         .then((res) => {
