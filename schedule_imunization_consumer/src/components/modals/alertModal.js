@@ -1,3 +1,9 @@
+/*
+
+ -> Generate alert modal to show important informations before critical actions
+
+*/
+
 import { Modal, Button } from "react-bootstrap";
 
 const AlertModal = ({ showModal, cancel, confirm, data }) => {

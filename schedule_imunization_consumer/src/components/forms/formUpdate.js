@@ -1,3 +1,9 @@
+/*
+
+ -> Generate form to view Patient account informations
+
+*/
+
 import { Form, FormGroup, Button, Badge } from "react-bootstrap";
 import { useState } from "react";
 import jwtDecode from "jwt-decode";
@@ -8,6 +14,7 @@ import axiosClient from "../../utils/axios.js";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
+//form schema validator
 const UpdateSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "Esse nome não é válido")
@@ -18,10 +25,11 @@ const UpdateSchema = Yup.object().shape({
     .max(11, "Hii... não está correto")
     .required("Informar o CPF é obrigatório"),
   date: Yup.date()
-    .max(Date(), "A vacinação está disponível apenas para maiores de 5 anos!")
+    .max(Date(), "data invádila")
     .required("É preciso informar a data do seu nascimento"),
 });
 
+// set path
 const path = "../patient";
 
 const UpdatePatientForm = ({ showUpdateForm }) => {
@@ -35,19 +43,21 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
   if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID) && !userToken)
     setToken(localStorage.getItem(process.env.REACT_APP_TOKEN_ID));
 
+  // Load user data from token
   if (userToken && !payload) setPyload(jwtDecode(userToken));
 
+  //set values from token payload
   if (payload && !preValues) {
     const [date] = payload.birthday.split("T");
     setValues({ name: payload.name, cpf: payload.cpf, birthday: date });
   }
-  console.log(preValues);
-  console.log({ payload: payload, userToken: userToken });
 
+  //When user click on "Sair" button, credential must be deleted from local storage
   const clearCredentials = () => {
     localStorage.removeItem(process.env.REACT_APP_TOKEN_ID);
   };
 
+  // To update data
   const updatePatient = async (values) => {
     setLoading(true);
     const ndate = values.date.toISOString();
@@ -59,6 +69,7 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
       cpf: values.cpf,
     };
 
+    //Connection to database
     const custonFetch = async () => {
       axiosClient
         .post("/patient/edit", { ...params }, { headers: { token: userToken } })
@@ -93,7 +104,7 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
           cpf: preValues ? preValues.cpf : "",
         }}
       >
-        {({ values, errors, touched, setFieldValue }) => (
+        {({ values, errors, touched }) => (
           <Form>
             <FormGroup>
               <label>Nome</label>

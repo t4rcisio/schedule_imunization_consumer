@@ -1,3 +1,9 @@
+/*
+
+ -> Generate a main navbar to switch pages
+
+*/
+
 import { useState } from "react";
 import { Nav, Container, Navbar } from "react-bootstrap";
 import ModalSwitch from "../modals/modalSwitch";
@@ -14,7 +20,7 @@ const NavBar = () => {
     if (token) {
       const payload = jwtDecode(token);
       const { permission } = payload;
-
+      // if user click on current page, nothing happens
       if ("/" + permission === page) navegate(page);
       else showModal(true);
     } else navegate(page);

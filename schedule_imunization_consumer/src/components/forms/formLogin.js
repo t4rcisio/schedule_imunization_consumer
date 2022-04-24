@@ -1,3 +1,12 @@
+/*
+
+ -> Generate form to login 
+
+  This form generate two models to login
+  1: Patient Login
+  2: Nurse Login
+*/
+
 import { Form, FormGroup, Button, Badge, Card } from "react-bootstrap";
 import axiosClient from "../../utils/axios.js";
 import Loading from "../subcomponents/loading.js";
@@ -5,6 +14,7 @@ import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 
+// form schema validator
 const LoginSchema = Yup.object().shape({
   cpf: Yup.string()
     .min(11, "Hii... não está correto")
@@ -19,11 +29,11 @@ const FormLogin = ({ setToken, showLoginForm }) => {
   const [loading, setLoading] = useState(false);
   const [passReq, setPassReq] = useState(undefined);
 
+  //Set view type. -> define password is required or not
   if (window.location.pathname === "/nurse" && !passReq) setPassReq(true);
 
-  const custonFetch = async (params, url) => {
-    console.log({ params: params, url: url });
-
+  const custonFetch = (params, url) => {
+    //Databse conncetion
     axiosClient
       .post(url, { ...params })
       .then((res) => {
@@ -34,7 +44,6 @@ const FormLogin = ({ setToken, showLoginForm }) => {
       })
       .catch((err) => {
         setServertError(err);
-        console.log(err);
       })
       .finally(() => {
         setLoading(false);
@@ -68,7 +77,7 @@ const FormLogin = ({ setToken, showLoginForm }) => {
                 <label>
                   <span>
                     <Badge bg="dark" className="mb-2">
-                      CPF (Apenas numeros)
+                      CPF (Apenas números)
                     </Badge>
                   </span>
                 </label>

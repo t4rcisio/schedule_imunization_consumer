@@ -1,3 +1,9 @@
+/*
+
+ -> Generate form to create a new Nurse account
+
+*/
+
 import { Form, FormGroup, Button, Badge, Card } from "react-bootstrap";
 import axiosClient from "../../utils/axios.js";
 import Loading from "../subcomponents/loading.js";
@@ -6,6 +12,7 @@ import * as Yup from "yup";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Input schema validator
 const newNurseSchema = Yup.object().shape({
   cpf: Yup.string()
     .min(11, "Hii... não está correto")
@@ -20,34 +27,36 @@ const newNurseSchema = Yup.object().shape({
     .required("Preencha o campo da senha"),
 });
 
+// Generate form
 const FormCreateNurse = ({ showLoginForm }) => {
   const [serverError, setServertError] = useState(false);
   const [userError, setUserError] = useState(false);
   const [loading, setLoading] = useState(false);
   const navegate = useNavigate();
 
-  const custonFetch = async (params, url) => {
-    console.log({ params: params, url: url });
-
+  const custonFetch = (params, url) => {
+    //Connect to databse
     axiosClient
       .post(url, { ...params })
       .then((res) => {
         if (!res.data.error) {
           alert("Usuário criado com sucesso!");
-          navegate("../nurse");
+          navegate("../");
         } else setUserError(true);
       })
       .catch((err) => {
         setServertError(err);
-        console.log(err);
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
+  //To create a new Nurse
   const createNurse = (values) => {
     setLoading(true);
+
+    // body params
     const params = {
       name: values.name,
       cpf: values.cpf,

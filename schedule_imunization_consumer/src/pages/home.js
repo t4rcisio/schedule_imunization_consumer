@@ -1,3 +1,9 @@
+/*
+
+-> Home Page
+
+*/
+
 import { useState } from "react";
 import { Carousel, Container, Image } from "react-bootstrap";
 import NavbarBotton from "../components/navs/navbarBotton";
@@ -5,8 +11,8 @@ import NavbarBotton from "../components/navs/navbarBotton";
 const Home = () => {
   const [listImages, setList] = useState([...Array(Number(3)).keys()]);
 
+  //load images list
   if (!listImages.length) setList([...Array(Number(3)).keys()]);
-  console.log(listImages);
 
   return (
     <>
