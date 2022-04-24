@@ -1,4 +1,4 @@
-import { Formik, Field} from "formik";
+import { Formik, Field } from "formik";
 import {
   Modal,
   Button,
@@ -66,6 +66,9 @@ const NewSession = ({
       time: ndate.toLocaleTimeString(),
       clinicId: values.clinic,
     };
+
+    console.log({ params: { ...params } });
+
     const custonFetch = () => {
       axiosClient
         .post(
@@ -135,12 +138,15 @@ const NewSession = ({
                       <Badge bg="danger">Data inválida</Badge>{" "}
                     </small>
                   )}
+                  {error && <Badge bg="danger">{error}</Badge>}
                 </FormGroup>
+
                 <>
                   <Button
                     variant="success"
                     className="btn btn-primary mt-3 me-3"
                     onClick={() => {
+                      setError(false);
                       if (verifyValues(values)) buidSession(values);
                     }}
                   >
@@ -162,13 +168,6 @@ const NewSession = ({
               </Form>
             )}
           </Formik>
-          <Row>
-            <ToastNotification
-              message={error}
-              showNotification={showNotification}
-              setShow={setShow}
-            />
-          </Row>
         </Modal.Body>
       </Modal>
     </>
