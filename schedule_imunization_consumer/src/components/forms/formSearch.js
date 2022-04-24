@@ -18,6 +18,7 @@ const Search = ({
   setLoading,
   reload,
   setReload,
+  setErrorUpdate,
 }) => {
   const [token, setToken] = useState(undefined);
   const [dateError, setErrorDate] = useState(false);
@@ -51,6 +52,7 @@ const Search = ({
   };
 
   const getSessions = (values) => {
+    setErrorUpdate(false);
     const { clinic, date } = values;
 
     const ndate = new Date(date);
