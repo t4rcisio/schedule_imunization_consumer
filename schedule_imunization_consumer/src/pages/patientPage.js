@@ -1,7 +1,7 @@
 import FormCreate from "../components/forms/formCreate.js";
 import FormLogin from "../components/forms/formLogin.js";
-import HomePage from "../components/patient_components/patientSessionsTable.js";
-import NewSession from "../components/session/newSessionModal.js";
+import HomePage from "../components/cards&tables/patientSessionsTable.js";
+import NewSession from "../components/forms/formCreateSession.js";
 import UpdatePatientForm from "../components/forms/formUpdate.js";
 import { useState } from "react";
 import { Row, Container, Card, Button } from "react-bootstrap";

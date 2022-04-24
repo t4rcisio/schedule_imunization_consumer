@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Nav, Container, Navbar } from "react-bootstrap";
-import ModalSwitch from "./modalSwitch";
+import ModalSwitch from "../modals/modalSwitch";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
@@ -26,8 +26,7 @@ const NavBar = () => {
         <Nav.Link
           href="#"
           onClick={() => {
-            setLink("/");
-            switchPage("/");
+            navegate("./");
           }}
         >
           Home

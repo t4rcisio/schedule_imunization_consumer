@@ -4,9 +4,9 @@ import FormLogin from "../components/forms/formLogin.js";
 import FormCreateNurse from "../components/forms/formCreateNurse.js";
 import Search from "../components/forms/formSearch.js";
 import Loading from "../components/subcomponents/loading.js";
-import SessionCards from "../components/session/sessionCards.js";
+import SessionCards from "../components/cards&tables/sessionCards.js";
 import axiosClient from "../utils/axios.js";
-import AlertModal from "../components/session/alertModal.js";
+import AlertModal from "../components/modals/alertModal.js";
 
 const data = {
   title: "Atenção!",
@@ -14,6 +14,8 @@ const data = {
   cancel: "Cancelar",
   confirm: "Concluir",
 };
+
+const type = "Clinic";
 
 const NursePage = () => {
   const [token, setToken] = useState(false);
@@ -24,7 +26,6 @@ const NursePage = () => {
   const [errorServer, setErrorServer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorUpdate, setErrorUpdate] = useState(false);
-  const [type, setType] = useState("Clinic");
 
   //Modal params
   const [showModal, showPopUp] = useState(false);

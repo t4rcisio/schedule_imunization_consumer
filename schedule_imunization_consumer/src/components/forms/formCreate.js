@@ -1,6 +1,6 @@
 import { Form, FormGroup, Button, Badge } from "react-bootstrap";
 import { useState } from "react";
-import Calendar from "../subcomponents/calendar.js";
+import Calendar from "../calendar/calendar.js";
 import { Formik, Field } from "formik";
 import Loading from "../subcomponents/loading.js";
 import axiosClient from "../../utils/axios.js";

@@ -12,7 +12,7 @@ import OptionsForm from "../subcomponents/optionsFormClinic.js";
 import { useState } from "react";
 import * as Yup from "yup";
 import axiosClient from "../../utils/axios.js";
-import CalendarSession from "./calendarSession.js";
+import CalendarSession from "../calendar/calendarSession.js";
 import Loading from "../subcomponents/loading.js";
 import ToastNotification from "../subcomponents/toast.js";
 

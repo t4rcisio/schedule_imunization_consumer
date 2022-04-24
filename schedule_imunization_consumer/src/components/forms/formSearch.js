@@ -1,6 +1,6 @@
 import { Field, Formik } from "formik";
 import { Badge, Button, Form, FormGroup, Row } from "react-bootstrap";
-import CalendarSession from "../session/calendarSession.js";
+import CalendarSession from "../calendar/calendarSession.js";
 import OptionsForm from "../subcomponents/optionsFormClinic.js";
 import axiosClient from "../../utils/axios.js";
 import { useState } from "react";

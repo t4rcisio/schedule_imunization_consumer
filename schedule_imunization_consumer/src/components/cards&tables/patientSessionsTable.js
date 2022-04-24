@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Container } from "react-bootstrap";
 import axiosClient from "../../utils/axios.js";
-import SessionCards from "../session/sessionCards.js";
-import AlertModal from "../session/alertModal.js";
+import SessionCards from "./sessionCards.js";
+import AlertModal from "../modals/alertModal.js";
 import Loading from "../subcomponents/loading.js";
 
 const data = {
