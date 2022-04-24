@@ -42,7 +42,7 @@ const FormCreate = ({ showLoginForm }) => {
         .then((res) => {
           if (!res.data.error) {
             alert("Usuário criado com sucesso");
-            navegate("./patient");
+            navegate("../patient");
           } else alert("Usuário já cadastrado");
         })
         .catch((err) => {
