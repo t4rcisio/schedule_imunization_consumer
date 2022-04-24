@@ -158,7 +158,7 @@ const UpdatePatientForm = ({ showUpdateForm }) => {
                     className="btn btn-primary ms-3 mt-3"
                     onClick={() => {
                       // Reload page
-                      navegate(path);
+                      navegate("../");
                     }}
                   >
                     Voltar
