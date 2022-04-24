@@ -101,6 +101,7 @@ const Search = ({ setArraySessions, setError, setErrorServer, setLoading }) => {
                 <Button
                   className="mt-2"
                   onClick={() => {
+                    setErrorDate(false);
                     if (!Object.values(errors).length) getSessions(values);
                   }}
                 >
