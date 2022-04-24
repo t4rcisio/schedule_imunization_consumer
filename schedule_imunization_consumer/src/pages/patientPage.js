@@ -1,6 +1,6 @@
 import FormCreate from "../components/forms/formCreate.js";
 import FormLogin from "../components/forms/formLogin.js";
-import HomePage from "../components/patient_components/patientHome.js";
+import HomePage from "../components/patient_components/patientSessionsTable.js";
 import NewSession from "../components/session/newSessionModal.js";
 import UpdatePatientForm from "../components/forms/formUpdate.js";
 import { useState } from "react";

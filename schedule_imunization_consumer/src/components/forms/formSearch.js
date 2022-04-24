@@ -7,20 +7,18 @@ import { useState } from "react";
 import * as Yup from "yup";
 
 const SearchSchema = Yup.object().shape({
-  clinic: Yup.string().required("Informar o CPF é obrigatório"),
-  date: Yup.date().required("Preencha o campo da senha"),
+  clinic: Yup.string().required("Selecione uma unidade de saúde"),
+  date: Yup.date().required("Preencha o campo com uma data e horário"),
 });
 
 const Search = ({ setArraySessions, setError, setErrorServer, setLoading }) => {
   const [token, setToken] = useState(undefined);
+  const [dateError, setErrorDate] = useState(false);
 
   if (localStorage.getItem(process.env.REACT_APP_TOKEN_ID) && !token)
     setToken(localStorage.getItem(process.env.REACT_APP_TOKEN_ID));
 
   const custonFetch = (params) => {
-    console.log(params);
-    console.log(token);
-
     setLoading(true);
     axiosClient
       .post("/nurse/search", params, { headers: { token: token } })
@@ -46,9 +44,13 @@ const Search = ({ setArraySessions, setError, setErrorServer, setLoading }) => {
 
   const getSessions = (values) => {
     const { clinic, date } = values;
-    
 
     const ndate = new Date(date);
+    if (ndate <= new Date()) return setErrorDate(true);
+
+    const minutes = ndate.getMinutes();
+    if (minutes !== 0) return setErrorDate(true);
+
     const session_date = ndate.toLocaleDateString();
     const session_time = ndate.getHours();
 
@@ -74,19 +76,24 @@ const Search = ({ setArraySessions, setError, setErrorServer, setLoading }) => {
                   Escolha a unidade de saúde{" "}
                   {errors.clinic && (
                     <Badge pill bg="warning" text="dark">
-                      Selecione uma unidade válida
+                      {errors.clinic}
                     </Badge>
                   )}
                 </small>
                 <Field as="select" name="clinic">
-                  <option value="">Selecione</option>
+                  <option value={undefined}>Selecione</option>
                   <OptionsForm />
                 </Field>
                 <small>
                   Selecione a data e horário{" "}
-                  {errors.clinic && (
+                  {errors.date && (
                     <Badge pill bg="warning" text="dark">
-                      Selecione uma data válida
+                      {errors.date}
+                    </Badge>
+                  )}
+                  {dateError && (
+                    <Badge pill bg="warning" text="dark">
+                      Informe uma data válida
                     </Badge>
                   )}
                 </small>
