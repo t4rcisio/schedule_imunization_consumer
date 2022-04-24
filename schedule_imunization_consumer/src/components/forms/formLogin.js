@@ -29,7 +29,7 @@ const FormLogin = ({ setToken, showLoginForm }) => {
       .then((res) => {
         if (!res.data.error) {
           localStorage.setItem(process.env.REACT_APP_TOKEN_ID, res.data.token);
-          setToken(true);
+          setToken(res.data.token);
         } else setUserError(true);
       })
       .catch((err) => {

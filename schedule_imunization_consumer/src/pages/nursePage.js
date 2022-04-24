@@ -64,7 +64,7 @@ const NursePage = () => {
         }
       )
       .then((res) => {
-        console.log({ res: res.data });
+        console.log({ try: { res: res.data } });
         if (!res.data.error) {
           setReload(true);
         } else setErrorUpdate(true);
@@ -117,6 +117,7 @@ const NursePage = () => {
                   setLoading={setLoading}
                   reload={reload}
                   setReload={setReload}
+                  setErrorUpdate={setErrorUpdate}
                 />
               )}
               {errorUpdate && (
