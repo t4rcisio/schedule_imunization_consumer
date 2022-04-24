@@ -23,6 +23,7 @@ const SignupSchema = Yup.object().shape({
 
 const FormCreate = ({ showLoginForm }) => {
   const [loading, setLoading] = useState(false);
+  const navegate = useNavigate();
 
   const newPatient = async (values) => {
     setLoading(true);
@@ -41,6 +42,7 @@ const FormCreate = ({ showLoginForm }) => {
         .then((res) => {
           if (!res.data.error) {
             alert("Usuário criado com sucesso");
+            navegate("./patient");
           } else alert("Usuário já cadastrado");
         })
         .catch((err) => {

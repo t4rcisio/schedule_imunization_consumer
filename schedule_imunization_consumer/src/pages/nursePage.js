@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Container, Row, Card, Button, Badge } from "react-bootstrap";
 import FormLogin from "../components/forms/formLogin.js";
-import FormCreate from "../components/forms/formCreate.js";
+import FormCreateNurse from "../components/forms/formCreateNurse.js";
 import Search from "../components/forms/formSearch.js";
 import Loading from "../components/subcomponents/loading.js";
 import SessionCards from "../components/session/sessionCards.js";
@@ -120,7 +120,9 @@ const NursePage = () => {
               {!token && signin && (
                 <FormLogin setToken={setToken} showLoginForm={showLoginForm} />
               )}
-              {!token && signup && <FormCreate showLoginForm={showLoginForm} />}
+              {!token && signup && (
+                <FormCreateNurse showLoginForm={showLoginForm} />
+              )}
               {sessions.length ? (
                 <SessionCards
                   sessions={sessions}

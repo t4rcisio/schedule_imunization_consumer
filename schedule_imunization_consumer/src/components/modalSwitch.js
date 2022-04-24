@@ -12,7 +12,7 @@ const ModalSwitch = ({ showModal, link }) => {
     <>
       <Modal show={true} fullscreen={"md-down"}>
         <Modal.Header>
-          <Modal.Title>Antenção</Modal.Title>
+          <Modal.Title>Atenção</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Você está prestes a trocar de ambiente, isso requer que você faça
