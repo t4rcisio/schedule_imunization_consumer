@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axiosClient from "../../utils/axios";
 import Loading from "./loading.js";
 
