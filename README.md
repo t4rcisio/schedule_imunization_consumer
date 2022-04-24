@@ -21,7 +21,8 @@ Exemplos de pacientes já cadastrados:
 <br/>
 <br/> 
 Exemplos de Servidores já cadastrados
- Nome           | CPF           | Senha   
+
+ Nome           | CPF           | Senha       |
 | ------------- | ------------- | --------    |
 | `Carlos`      | 12872530088   | 12345678    |
 | `Ana`         | 28840085009   | 12345678    |
@@ -29,6 +30,7 @@ Exemplos de Servidores já cadastrados
 
 <br/>
 Fique a vontade para criar usuários e incluir sessões :)
+<br/>
 <br/>
 
 
