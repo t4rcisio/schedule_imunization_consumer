@@ -23,6 +23,15 @@ const NavBar = () => {
   return (
     <>
       <Navbar bg="dark" variant="dark">
+        <Nav.Link
+          href="#"
+          onClick={() => {
+            setLink("/");
+            switchPage("/");
+          }}
+        >
+          Home
+        </Nav.Link>
         <Container>
           <Nav className="ms-auto">
             <Nav.Link
