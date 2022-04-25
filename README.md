@@ -42,7 +42,7 @@ Passo 1<br/>
 
 Passo 2<br/>
 -> Modifique o arquivo .env-example
--  Modifique o nome do arquivo para .env e adicione um link para o mongoDB cloud
+-  Modifique o nome do arquivo para .env 
 
 Passo 3 <br/>
 -> Instale as dependências:
