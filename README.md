@@ -49,8 +49,8 @@ Passo 3 <br/>
 - Na raiz do projeto, execute  *yarn install*
 
 Passo 4 <br/>
--> Subindo o host
-- Por padrão, a porta que o host irá usar é a 3000<br />
+-> Subindo o front
+- Por padrão, a porta que o front irá usar é a 3000<br />
         caso queira modificar, o parâmetro está no arquivo .env.<br />
         Execute o comando *npm start*
 
