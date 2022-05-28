@@ -54,6 +54,8 @@ Passo 4 <br/>
         caso queira modificar, o parâmetro está no arquivo .env.<br />
         Execute o comando *npm start*
 
-Se tudo ocorrer bem, seu navegador irá abrir na home da aplicação<br />
+Dockerfile<br />
+
+Testes<br />
 
 
